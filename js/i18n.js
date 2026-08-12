@@ -51,27 +51,58 @@ function traduzir(chave) {
 }
 
 /*
-  Apply translations to every [data-i18n] element within a scope.
-  A data-i18n-attr attribute (optional) targets an attribute instead of text,
-  for example data-i18n="nav.menu" data-i18n-attr="aria-label,title".
+  Apply translations within a scope. Each element may carry any of:
+    data-i18n              set textContent (or, with data-i18n-attr, a list of
+                           attributes such as aria-label,title)
+    data-i18n-html         set innerHTML (values may contain a highlight span,
+                           for example <span class="destaque">...</span>)
+    data-i18n-placeholder  set the placeholder attribute
+    data-i18n-aria         set the aria-label attribute
+    data-i18n-alt          set the alt attribute
+  All highlighted words live inside the translated value, so each language
+  keeps its own natural word order.
 */
+const SELETOR_I18N = [
+  '[data-i18n]',
+  '[data-i18n-attr]',
+  '[data-i18n-html]',
+  '[data-i18n-placeholder]',
+  '[data-i18n-aria]',
+  '[data-i18n-alt]',
+].join(',');
+
 function aplicar(secao) {
   const escopo = secao || document;
-  const alvos = escopo.querySelectorAll('[data-i18n]');
+  const alvos = escopo.querySelectorAll(SELETOR_I18N);
   alvos.forEach((el) => {
+    // textContent, or an explicit attribute list (Phase 1 behaviour)
     const chave = el.getAttribute('data-i18n');
-    if (!chave) return;
-    const valor = traduzir(chave);
-
-    const attrLista = el.getAttribute('data-i18n-attr');
-    if (attrLista) {
-      attrLista.split(',').forEach((attr) => {
-        const nome = attr.trim();
-        if (nome) el.setAttribute(nome, valor);
-      });
-    } else {
-      el.textContent = valor;
+    if (chave) {
+      const valor = traduzir(chave);
+      const attrLista = el.getAttribute('data-i18n-attr');
+      if (attrLista) {
+        attrLista.split(',').forEach((attr) => {
+          const nome = attr.trim();
+          if (nome) el.setAttribute(nome, valor);
+        });
+      } else {
+        el.textContent = valor;
+      }
     }
+
+    // innerHTML: values are authored in our own trusted locale files.
+    const chaveHtml = el.getAttribute('data-i18n-html');
+    if (chaveHtml) el.innerHTML = traduzir(chaveHtml);
+
+    // Single attribute targets.
+    const chavePh = el.getAttribute('data-i18n-placeholder');
+    if (chavePh) el.setAttribute('placeholder', traduzir(chavePh));
+
+    const chaveAria = el.getAttribute('data-i18n-aria');
+    if (chaveAria) el.setAttribute('aria-label', traduzir(chaveAria));
+
+    const chaveAlt = el.getAttribute('data-i18n-alt');
+    if (chaveAlt) el.setAttribute('alt', traduzir(chaveAlt));
   });
 }
 

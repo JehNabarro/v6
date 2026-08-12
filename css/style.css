@@ -50,10 +50,11 @@ html:not(.js) .precisa-js {
   align-items: center;
   justify-content: space-between;
   padding-inline: var(--espaco-pagina);
-  pointer-events: none; /* let children opt back in, keep the bar transparent */
+  pointer-events: none;
+  /* let children opt back in, keep the bar transparent */
 }
 
-.cabecalho > * {
+.cabecalho>* {
   pointer-events: auto;
 }
 
@@ -69,7 +70,8 @@ html:not(.js) .precisa-js {
   width: auto;
   /* The symbol viewBox is 318 x 249; reserve width to match its ratio. */
   aspect-ratio: 318 / 249;
-  overflow: visible; /* the soft glow filter bleeds past the viewBox */
+  overflow: visible;
+  /* the soft glow filter bleeds past the viewBox */
 }
 
 /* Circular menu button top right. */
@@ -151,4 +153,329 @@ html:not(.js) .precisa-js {
 
 #chat[hidden] {
   display: none;
+}
+
+/* ================================================================ */
+/* Phase 2: home hero                                              */
+/* ================================================================ */
+
+/* ---- Single glass utility. Reused on the search field, chips and  */
+/* the menu button. Do not create per component glass variants. ---- */
+.glass {
+  background: var(--cor-vidro);
+  border: 1px solid var(--cor-borda);
+  box-shadow:
+    inset 1px 1px 1px var(--cor-brilho),
+    0 8px 32px var(--cor-sombra);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* ---- Top centre radial glow: above the grid, below the content. */
+.glow-topo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* between --z-fundo (-1) and --z-base (1) */
+  pointer-events: none;
+  background: var(--glow-radial-topo);
+}
+
+/* ---- Hero layout ---- */
+.pagina-home {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--esp-sm);
+  /* 24px, tightened on mobile below */
+  /* Clear the fixed header at the top; leave room for the scroll indicator
+     and label pinned at the bottom. All values are on the 8px subgrid. */
+  padding: calc(var(--altura-cabecalho) + var(--esp-lg)) var(--espaco-pagina) var(--esp-2xl);
+}
+
+/* Eyebrow and its short accent rule. */
+.home-eyebrow {
+  margin: 0;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.home-eyebrow-rule {
+  display: block;
+  width: var(--esp-lg);
+  /* 32px */
+  height: 1px;
+  margin: var(--esp-xs) auto 0;
+  background: var(--cor-borda);
+}
+
+/* Title row: name plus inline ringed avatar, vertically centred. */
+.home-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--esp-md);
+}
+
+.home-title {
+  margin: 0;
+  color: var(--cor-texto);
+  /* styles the white "I'm" */
+  font-size: var(--texto-titulo);
+  font-weight: var(--peso-forte);
+  line-height: 1.05;
+}
+
+/* The name span: purple gradient clipped to the text. */
+.home-title .destaque {
+  background: var(--gradiente-marca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Circular avatar with accent ring and glow. */
+.home-avatar {
+  width: var(--tam-avatar);
+  height: var(--tam-avatar);
+  border-radius: var(--raio-circulo);
+  object-fit: cover;
+  border: 2px solid var(--cor-destaque);
+  box-shadow: var(--brilho-destaque);
+  background: var(--cor-bloco);
+  /* fallback fill when the photo is absent */
+  flex: 0 0 auto;
+}
+
+/* Subtitle. Its accent span is solid, no gradient. */
+.home-subtitle {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-subtitulo);
+}
+
+.home-subtitle .destaque {
+  color: var(--cor-destaque);
+}
+
+/* Search field: glass pill, the chat in its resting state. */
+.home-search {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-sm);
+  width: min(100%, var(--largura-chat-bar));
+  padding: var(--esp-xs) var(--esp-xs) var(--esp-xs) var(--esp-md);
+  border-radius: var(--raio-pill);
+  margin-top: var(--esp-xs);
+  transition: border-color 0.2s ease;
+}
+
+.home-search:focus-within {
+  border-color: var(--cor-destaque);
+}
+
+.home-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: var(--alt-sm);
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cor-texto);
+  font-family: var(--fonte-principal);
+  font-size: var(--texto-lg);
+}
+
+.home-search__input::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+/* Circular send button with accent glow. */
+.home-search__send {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--alt-sm);
+  height: var(--alt-sm);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-circulo);
+  background: var(--cor-vidro);
+  color: var(--cor-texto);
+  box-shadow: var(--brilho-destaque);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-search__send svg {
+  width: var(--esp-md);
+  height: var(--esp-md);
+}
+
+.home-search__send:hover,
+.home-search__send:focus-visible {
+  border-color: var(--cor-destaque);
+  box-shadow:
+    0 0 16px rgba(182, 94, 219, 0.65),
+    0 0 28px rgba(182, 94, 219, 0.40);
+}
+
+/* Quick actions row plus the inline scroll link. */
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-sm);
+  margin-top: var(--esp-xs);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-xs);
+  height: var(--alt-xs);
+  padding: 0 var(--esp-md);
+  border-radius: var(--raio-pill);
+  color: var(--cor-texto);
+  font-size: var(--texto-sm);
+  transition: border-color 0.2s ease;
+}
+
+.chip:hover,
+.chip:focus-visible {
+  border-color: var(--cor-destaque);
+}
+
+.chip__icone {
+  width: var(--esp-md);
+  height: var(--esp-md);
+  color: var(--cor-destaque);
+}
+
+/* Text button, no glass. "Or just scroll", scroll word in accent. */
+.home-scroll-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-xs);
+  padding: var(--esp-xs) var(--esp-sm);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.home-scroll-link .destaque {
+  color: var(--cor-destaque);
+}
+
+/* An arrow-down cue after the scroll link text, drawn with CSS so the copy
+   stays a single translated string. */
+.home-scroll-link::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  color: var(--cor-destaque);
+  -webkit-mask: no-repeat center / contain url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>');
+  mask: no-repeat center / contain url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>');
+}
+
+/* Scroll indicator pinned near the base of the viewport. */
+.home-scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--esp-xl) + var(--esp-xs));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-xs);
+  pointer-events: none;
+}
+
+.home-scroll-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(180deg, var(--cor-borda), transparent);
+}
+
+.home-scroll-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--raio-circulo);
+  background: var(--cor-destaque);
+  box-shadow: var(--brilho-destaque);
+  animation: pulso-scroll 2.4s ease-in-out infinite;
+}
+
+@keyframes pulso-scroll {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.5);
+    opacity: 0.6;
+  }
+}
+
+.home-scroll-label {
+  position: absolute;
+  left: 50%;
+  bottom: var(--esp-md);
+  transform: translateX(-50%);
+  margin: 0;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-xs);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Reserved explore anchor (empty, filled in a later phase). */
+.explorar-reserva {
+  min-height: 100dvh;
+}
+
+/* ---- Responsive ---- */
+
+/* Tablet: slightly tighter rhythm. */
+@media (min-width: 768px) {
+  .pagina-home {
+    gap: var(--esp-md);
+    /* 32px */
+  }
+}
+
+/* Desktop: roomy vertical rhythm, avatar at the top of its size. */
+@media (min-width: 1024px) {
+  .pagina-home {
+    gap: var(--esp-lg);
+    /* 64px, one grid cell */
+  }
+}
+
+/* Mobile: tighter gaps so the pinned scroll indicator and label never
+   collide with the actions. */
+@media (max-width: 767px) {
+  .pagina-home {
+    gap: var(--esp-sm);
+    /* 16px */
+    padding-bottom: calc(var(--esp-2xl) + var(--esp-lg));
+  }
+
+  .home-scroll-indicator {
+    bottom: calc(var(--esp-xl) + var(--esp-xs));
+  }
 }

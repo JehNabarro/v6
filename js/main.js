@@ -20,6 +20,7 @@ import * as grid from './grid.js';
 import * as i18n from './i18n.js';
 import * as router from './router.js';
 import * as header from './header.js';
+import * as home from './home.js';
 
 async function bootstrap() {
   // 2. Camera: seed the navigation state.
@@ -37,9 +38,13 @@ async function bootstrap() {
   // 6. Header: brand mark and menu button.
   header.init();
 
+  // 7. Home hero interactions (resting state only). Delegated listeners, so
+  //    this is wired once and survives router re-renders.
+  home.init();
+
   // Confirm GSAP is vendored and importable. Do not animate anything yet.
   console.log(
-    `Portfolio Phase 1 ready. GSAP ${gsap.version} vendored and importable. ` +
+    `Portfolio Phase 2 ready. GSAP ${gsap.version} vendored and importable. ` +
     `Language: ${i18n.idioma()}. Grid cell: ${grid.default.cellSize}px.`
   );
 }

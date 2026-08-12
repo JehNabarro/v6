@@ -37,6 +37,9 @@
   --sem-cor: transparent;
   /* New raw token: a lighter grid line so the grid reads as a faint texture */
   --branco-alpha-05b: rgba(255, 255, 255, 0.05);
+  /* Phase 2 raw additions */
+  --branco-alpha-10: rgba(255, 255, 255, 0.1); /* subtle inset highlight for glass */
+  --roxo-escuro-alpha-28: rgba(35, 15, 50, 0.28); /* dark purple glass surface tint */
 
   /* Typography: family and weights */
   --fonte-principal: 'Glory', sans-serif;
@@ -47,6 +50,12 @@
   /* Typography: fluid sizes */
   --texto-titulo: clamp(30px, min(8.5vw, 8dvh), 72px);
   --texto-subtitulo: clamp(14px, min(3vw, 3dvh), 22px);
+
+  /* Typography: fixed type steps (Phase 2) */
+  --texto-xs: 12px;
+  --texto-sm: 14px;
+  --texto-base: 16px;
+  --texto-lg: 18px;
 
   /*
     Fixed spacing scale, base 64px.
@@ -67,6 +76,10 @@
   --alt-md: 56px;
   --alt-lg: 64px;
   --alt-xl: 72px;
+  --alt-2xl: 88px; /* avatar at desktop, 11 * 8 */
+
+  /* Fixed widths (on the subgrid rhythm) */
+  --larg-leitura-680: 680px; /* reading and chat bar width */
 
   /* Radii */
   --raio-md: 18px;
@@ -101,6 +114,18 @@
   --cor-bloco: var(--cinza-800);
   --cor-superficie-suave: var(--branco-alpha-06);
 
+  /* Glass and glow (Phase 2) */
+  --cor-vidro: var(--roxo-escuro-alpha-28);   /* the one glass surface */
+  --cor-brilho: var(--branco-alpha-10);        /* glass inset highlight */
+  --cor-sombra: var(--preto-alpha-35);         /* glass drop shadow */
+  --brilho-destaque: 0 0 12px rgba(182, 94, 219, 0.55), 0 0 22px rgba(182, 94, 219, 0.30); /* accent glow; 182,94,219 is --roxo-500 */
+  --gradiente-marca: linear-gradient(180deg, var(--lilas-300), var(--roxo-500)); /* name gradient */
+  --glow-radial-topo: radial-gradient(60% 40% at 50% 0%, rgba(182, 94, 219, 0.18), transparent 70%); /* top centre page glow */
+
+  /* Reading and avatar sizes (avatar is re-pointed per breakpoint below) */
+  --largura-chat-bar: var(--larg-leitura-680);
+  --tam-avatar: var(--alt-md); /* 56px on mobile */
+
   /* Layout semantics: these are the tokens the media queries re-point.
      They only ever reference existing raw --esp-* / --alt-* steps. */
   --espaco-pagina: var(--esp-md);      /* page gutter: 24px on the subgrid */
@@ -124,6 +149,7 @@
   :root {
     --espaco-pagina: var(--esp-xl);    /* 64px, one full grid cell */
     --altura-cabecalho: var(--alt-xl); /* 72px */
+    --tam-avatar: var(--alt-xl);       /* 72px */
   }
 }
 
@@ -131,6 +157,7 @@
 @media (min-width: 1024px) {
   :root {
     --espaco-pagina: var(--esp-xl); /* 64px, held at one grid cell */
+    --tam-avatar: var(--alt-2xl);   /* 88px */
   }
 }
 

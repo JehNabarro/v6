@@ -2,7 +2,15 @@
   "brand.name": "Jéssica Nabarro",
   "nav.menu": "Menu",
   "home.eyebrow": "WELCOME TO MY PORTFOLIO",
-  "home.title": "I'm Jéssica Nabarro",
-  "home.subtitle": "a UI/UX designer bridging design, development and business.",
+  "home.title": "I'm <span class=\"destaque\">Jéssica Nabarro</span>",
+  "home.subtitle": "a <span class=\"destaque\">UI/UX designer</span> bridging design, development and business.",
+  "home.search_placeholder": "What are you looking for?",
+  "home.send": "Send",
+  "home.cta.project": "My biggest project",
+  "home.cta.about": "About me",
+  "home.cta.contact": "Contact",
+  "home.or_scroll": "Or just <span class=\"destaque\">scroll</span>",
+  "home.scroll_explore": "SCROLL TO EXPLORE",
+  "home.avatar_alt": "Jéssica Nabarro",
   "about.title": "About me"
 }
