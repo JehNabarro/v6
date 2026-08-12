@@ -1,0 +1,142 @@
+/*
+  tokens.css
+  Two layer token system.
+
+  Layer 1 (raw scale): fixed primitives. Palette, spacing, heights, radii,
+  z-index, typography. These values are the single source of pixel and colour
+  truth and are NEVER redefined inside media queries.
+
+  Layer 2 (semantic): application tokens that point AT layer 1 steps. Media
+  queries only re-point a semantic token to a different raw step. They never
+  invent new pixel values.
+
+  Token names are kept in Portuguese verbatim from the jessy repo. JavaScript
+  reads several of them by name via getComputedStyle (for example the grid
+  reads --cor-linha-grade and --cor-fundo), so renaming them breaks the build.
+  Code comments are written in English.
+*/
+
+/* ---------------------------------------------------------------- */
+/* Layer 1: raw scale (fixed primitives, never redefined below)     */
+/* ---------------------------------------------------------------- */
+:root {
+  /* Raw palette */
+  --preto: #000000;
+  --branco: #FFFFFF;
+  --cinza-900: #22202B; /* general background */
+  --cinza-800: #2E2B3A; /* decorative blocks */
+  --roxo-500: #B65EDB;  /* brand: outline and main fill */
+  --roxo-400: #B85AF3;  /* brand: vivid detail */
+  --lilas-300: #C996F2; /* brand: medium tone */
+  --lilas-100: #F3DDF9; /* brand: light tone */
+  --branco-alpha-60: rgba(255, 255, 255, 0.6);
+  --branco-alpha-20: rgba(255, 255, 255, 0.2);
+  --branco-alpha-06: rgba(255, 255, 255, 0.06);
+  --branco-alpha-05: rgba(255, 255, 255, 0.05);
+  --preto-alpha-35: rgba(0, 0, 0, 0.35);
+  --sem-cor: transparent;
+  /* New raw token: a lighter grid line so the grid reads as a faint texture */
+  --branco-alpha-05b: rgba(255, 255, 255, 0.05);
+
+  /* Typography: family and weights */
+  --fonte-principal: 'Glory', sans-serif;
+  --peso-regular: 400;
+  --peso-medio: 600;
+  --peso-forte: 800;
+
+  /* Typography: fluid sizes */
+  --texto-titulo: clamp(30px, min(8.5vw, 8dvh), 72px);
+  --texto-subtitulo: clamp(14px, min(3vw, 3dvh), 22px);
+
+  /*
+    Fixed spacing scale, base 64px.
+    64px is the base module (one grid cell); 8px is the subgrid (64 / 8).
+    Every step is a multiple of 8, so all spacing lands on the grid and content
+    shares one rhythm with the 64px background.
+  */
+  --esp-xs: 8px;    /* subgrid unit */
+  --esp-sm: 16px;
+  --esp-md: 24px;
+  --esp-lg: 32px;
+  --esp-xl: 64px;   /* base module, one full grid cell */
+  --esp-2xl: 128px; /* two grid cells, matches the grid opening from 64 to 128 */
+
+  /* Fixed height scale (also on the 8px subgrid) */
+  --alt-xs: 40px;
+  --alt-sm: 48px;
+  --alt-md: 56px;
+  --alt-lg: 64px;
+  --alt-xl: 72px;
+
+  /* Radii */
+  --raio-md: 18px;
+  --raio-pill: 999px;
+  --raio-circulo: 50%;
+
+  /* Z-index scale */
+  --z-fundo: -1;   /* grid canvas */
+  --z-base: 1;
+  --z-chat: 90;
+  --z-header: 100;
+  --z-drawer: 200;
+}
+
+/* ---------------------------------------------------------------- */
+/* Layer 2: semantic application tokens                             */
+/* Base breakpoint (up to 479px).                                   */
+/* ---------------------------------------------------------------- */
+:root {
+  /* Colours */
+  --cor-fundo: var(--cinza-900);
+  --cor-texto: var(--branco);
+  --cor-texto-suave: var(--branco-alpha-60);
+  --cor-destaque: var(--roxo-500);
+  --cor-destaque-vivida: var(--roxo-400);
+  --cor-marca-media: var(--lilas-300);
+  --cor-marca-clara: var(--lilas-100);
+  --cor-borda: var(--branco-alpha-20);
+  /* In jessy this was 0.2; kept lighter here (around 0.05) so the grid reads as
+     a faint texture like the approved design. */
+  --cor-linha-grade: var(--branco-alpha-05b);
+  --cor-bloco: var(--cinza-800);
+  --cor-superficie-suave: var(--branco-alpha-06);
+
+  /* Layout semantics: these are the tokens the media queries re-point.
+     They only ever reference existing raw --esp-* / --alt-* steps. */
+  --espaco-pagina: var(--esp-md);      /* page gutter: 24px on the subgrid */
+  --altura-cabecalho: var(--alt-lg);   /* header height: 64px, one grid cell */
+}
+
+/* ---------------------------------------------------------------- */
+/* Application layer breakpoints. All five are present.             */
+/* Media queries only swap which raw step a semantic token uses.    */
+/* ---------------------------------------------------------------- */
+
+/* >= 480px */
+@media (min-width: 480px) {
+  :root {
+    --espaco-pagina: var(--esp-lg); /* 32px */
+  }
+}
+
+/* >= 768px */
+@media (min-width: 768px) {
+  :root {
+    --espaco-pagina: var(--esp-xl);    /* 64px, one full grid cell */
+    --altura-cabecalho: var(--alt-xl); /* 72px */
+  }
+}
+
+/* >= 1024px */
+@media (min-width: 1024px) {
+  :root {
+    --espaco-pagina: var(--esp-xl); /* 64px, held at one grid cell */
+  }
+}
+
+/* >= 1440px */
+@media (min-width: 1440px) {
+  :root {
+    --espaco-pagina: var(--esp-2xl); /* 128px, two grid cells */
+  }
+}
