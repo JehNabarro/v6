@@ -122,6 +122,31 @@
   --gradiente-marca: linear-gradient(180deg, var(--lilas-300), var(--roxo-500)); /* name gradient */
   --glow-radial-topo: radial-gradient(60% 40% at 50% 0%, rgba(182, 94, 219, 0.18), transparent 70%); /* top centre page glow */
 
+  /* Motion (Phase 3). Durations are real CSS time values; the eases are GSAP
+     ease NAMES, read once from these tokens by js/chat/chat.js so all timings
+     stay tokenised in one place. They are consumed by JS, not by CSS
+     transitions, so the ease values are GSAP identifiers rather than
+     cubic-bezier functions. */
+  --duracao-rapida: 0.24s;
+  --duracao-media: 0.42s;
+  --duracao-lenta: 0.6s;
+  --ease-entrada: power3.out;
+  --ease-saida: power2.in;
+
+  /* Menu motion (Phase 4). Copied verbatim from the jessy reference so the
+     hamburger and drawer timing match it exactly. Unlike the GSAP eases above,
+     these are consumed by real CSS transitions, so --ease-fluido is a CSS
+     timing function, not a GSAP ease name. */
+  --duracao-xs: 450ms;         /* hamburger bars: line to X */
+  --duracao-md: 600ms;         /* drawer slide in and out */
+  --ease-fluido: ease-in-out;  /* shared menu easing */
+
+  /* Menu layout (Phase 4). All on the raw scale. */
+  --tamanho-botao-menu: var(--alt-sm);  /* 48px circular hamburger button */
+  --largura-drawer: min(320px, 85vw);   /* readable drawer width, capped on phones */
+  --padding-drawer: var(--esp-md);      /* 24px inner padding */
+  --gap-drawer: var(--esp-md);          /* 24px between menu items */
+
   /* Reading and avatar sizes (avatar is re-pointed per breakpoint below) */
   --largura-chat-bar: var(--larg-leitura-680);
   --tam-avatar: var(--alt-md); /* 56px on mobile */

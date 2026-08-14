@@ -1,0 +1,197 @@
+/*
+  menu.css
+  The hamburger button and the navigation drawer.
+
+  The hamburger to X animation and the drawer slide are copied verbatim from the
+  jessy reference: the exact durations (--duracao-xs, --duracao-md), the shared
+  ease (--ease-fluido), the 7px bar translations and the 45deg rotations. Do not
+  retune these values; they are the whole point of matching jessy.
+*/
+
+/* ---------------------------------------------------------------- */
+/* Hamburger button                                                 */
+/* Three bars that morph to an X. Sits on the shared .glass surface. */
+/* ---------------------------------------------------------------- */
+.botao-menu {
+  position: relative;
+  width: var(--tamanho-botao-menu);
+  height: var(--tamanho-botao-menu);
+  border-radius: var(--raio-circulo);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  color: var(--cor-texto);
+}
+
+.botao-menu span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: var(--raio-pill);
+  background: var(--cor-texto);
+  transition:
+    transform var(--duracao-xs) var(--ease-fluido),
+    opacity var(--duracao-xs) var(--ease-fluido);
+}
+
+/* Line to X: middle bar fades, outer bars translate 7px and rotate to +/-45. */
+body.drawer-aberto .botao-menu span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+body.drawer-aberto .botao-menu span:nth-child(2) {
+  opacity: 0;
+}
+
+body.drawer-aberto .botao-menu span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------------------------------------------------------------- */
+/* Drawer panel                                                     */
+/* Right side drawer, slides in. .glass surface for site consistency. */
+/* ---------------------------------------------------------------- */
+.drawer-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--largura-drawer);
+  z-index: var(--z-drawer);
+  border-radius: var(--raio-md) 0 0 var(--raio-md);
+  padding: calc(var(--altura-cabecalho) + var(--padding-drawer)) var(--padding-drawer) var(--padding-drawer);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-drawer);
+  transform: translateX(100%);
+  transition:
+    transform var(--duracao-md) var(--ease-fluido),
+    visibility 0s linear var(--duracao-md);
+  visibility: hidden;
+}
+
+body.drawer-aberto .drawer-menu {
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform var(--duracao-md) var(--ease-fluido),
+    visibility 0s;
+}
+
+/* Keep the hamburger clickable above the open drawer so it can close it. */
+body.drawer-aberto header {
+  z-index: calc(var(--z-drawer) + 1);
+}
+
+/* ---------------------------------------------------------------- */
+/* Drawer content: clear hierarchy on phone and desktop.            */
+/* Reading order in the HTML: Home, About, Projects group, Contact.  */
+/* ---------------------------------------------------------------- */
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+}
+
+/* Primary section links: one shared weight for Home, About and Contact.
+   Comfortable tap height so the menu reads well on a phone. */
+.drawer-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--alt-xs); /* 40px tap target */
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto);
+  transition: color var(--duracao-xs) var(--ease-fluido);
+}
+
+/* Small uppercase section label, letter spaced and muted. Used by the footer
+   language group (the projects list no longer needs its own label). */
+.drawer-rotulo {
+  margin: 0;
+  font-size: var(--texto-xs);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+/* Project case list: nested just under the Projects link. It keeps the accent
+   line in front (the group cue), while every row carries the SAME visual weight
+   as the primary links — full strength text, no reduced opacity. */
+.drawer-projetos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-xs);
+  margin: 0;
+  padding-left: var(--esp-sm);
+  border-left: 1px solid var(--cor-borda);
+  list-style: none;
+}
+
+/* Project links: same weight and colour as .drawer-link, kept full strength so
+   the labels stay legible (no 60% opacity). Full tap height for mobile. */
+.drawer-projeto {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--alt-xs); /* 40px tap target */
+  text-align: left;
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto);
+  transition: color var(--duracao-xs) var(--ease-fluido);
+}
+
+/* Hover brightens links to the medium brand tone. */
+.drawer-projeto:hover,
+.drawer-projeto:focus-visible,
+.drawer-link:hover,
+.drawer-link:focus-visible {
+  color: var(--cor-marca-media);
+}
+
+/* ---------------------------------------------------------------- */
+/* Footer: language toggle                                          */
+/* ---------------------------------------------------------------- */
+.drawer-rodape {
+  margin-top: auto;
+  padding-top: var(--esp-md);
+  border-top: 1px solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-xs);
+}
+
+.drawer-idiomas {
+  display: inline-flex;
+  gap: var(--esp-xs);
+}
+
+.drawer-idioma {
+  min-width: var(--alt-xs);
+  height: var(--alt-xs);
+  padding: 0 var(--esp-sm);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pill);
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-sm);
+  transition:
+    color var(--duracao-xs) var(--ease-fluido),
+    border-color var(--duracao-xs) var(--ease-fluido);
+}
+
+.drawer-idioma:hover,
+.drawer-idioma:focus-visible {
+  color: var(--cor-marca-media);
+  border-color: var(--cor-destaque);
+}
+
+/* Active language: solid accent border and full strength text. */
+.drawer-idioma.is-ativo {
+  color: var(--cor-texto);
+  border-color: var(--cor-destaque);
+  box-shadow: var(--brilho-destaque);
+}

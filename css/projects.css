@@ -1,0 +1,99 @@
+/*
+  projects.css
+  The Projects page: a heading, a short intro, then the four cases as a stacked
+  list. Follows the layout language of the other pages (centred column, the
+  shared grid and top glow behind it, .glass-free simple rows).
+
+  Every row carries the SAME visual weight — the accent line in front is the only
+  grouping cue, matching the menu. Names run at full strength text so nothing
+  relies on reduced opacity for the primary label.
+*/
+
+.pagina-projetos {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--esp-lg);
+  padding: calc(var(--altura-cabecalho) + var(--esp-2xl)) var(--espaco-pagina) var(--esp-2xl);
+}
+
+.projetos-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-sm);
+}
+
+.projetos-titulo {
+  margin: 0;
+  font-size: var(--texto-titulo);
+  font-weight: var(--peso-forte);
+  line-height: 1.05;
+}
+
+.projetos-intro {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-subtitulo);
+}
+
+/* The four cases, stacked. Left aligned so the accent line reads as a spine. */
+.projetos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+  width: min(100%, var(--largura-chat-bar));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+/* One case row. The accent line in front is the same cue used in the menu; the
+   whole row is one full-strength weight, with a quieter description beneath. */
+.projeto-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-xs);
+  width: 100%;
+  padding: var(--esp-md);
+  padding-left: var(--esp-md);
+  border-left: 2px solid var(--cor-borda);
+  border-radius: 0 var(--raio-md) var(--raio-md) 0;
+  text-align: left;
+  color: var(--cor-texto);
+  transition:
+    border-color var(--duracao-rapida) ease,
+    background-color var(--duracao-rapida) ease;
+}
+
+.projeto-item:hover,
+.projeto-item:focus-visible {
+  border-left-color: var(--cor-destaque);
+  background: var(--cor-superficie-suave);
+}
+
+.projeto-item__nome {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto);
+}
+
+/* Description: the one place a softer tone is used, kept at 60% white which
+   clears WCAG AA (~6.6:1) on the page background. */
+.projeto-item__desc {
+  font-size: var(--texto-sm);
+  color: var(--cor-texto-suave);
+}
+
+/* Desktop: a touch more breathing room around the list. */
+@media (min-width: 768px) {
+  .pagina-projetos {
+    gap: var(--esp-xl);
+  }
+}

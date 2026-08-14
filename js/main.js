@@ -21,6 +21,8 @@ import * as i18n from './i18n.js';
 import * as router from './router.js';
 import * as header from './header.js';
 import * as home from './home.js';
+import * as contact from './contact.js';
+import * as chat from './chat/chat.js';
 
 async function bootstrap() {
   // 2. Camera: seed the navigation state.
@@ -42,9 +44,17 @@ async function bootstrap() {
   //    this is wired once and survives router re-renders.
   home.init();
 
-  // Confirm GSAP is vendored and importable. Do not animate anything yet.
+  // 7b. Contact page: delegated form submit (mailto) and the LinkedIn link.
+  contact.init();
+
+  // 8. Chat engine. Builds the fixed #chat internals once and wires the
+  //    open/close choreography and the step player. abrirChat() (called by the
+  //    home hero) drives the rest.
+  chat.init();
+
+  // Confirm GSAP is vendored and importable, and the chat engine is wired.
   console.log(
-    `Portfolio Phase 2 ready. GSAP ${gsap.version} vendored and importable. ` +
+    `Portfolio Phase 3 ready. GSAP ${gsap.version} vendored and importable. ` +
     `Language: ${i18n.idioma()}. Grid cell: ${grid.default.cellSize}px.`
   );
 }

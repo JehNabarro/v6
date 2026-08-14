@@ -104,6 +104,14 @@ function aplicar(secao) {
     const chaveAlt = el.getAttribute('data-i18n-alt');
     if (chaveAlt) el.setAttribute('alt', traduzir(chaveAlt));
   });
+
+  // Long form copy is authored as sibling [data-lang] blocks (see the About
+  // page) rather than in the JSON. Show the block matching the active language
+  // and hide the others. Runs on every apply, so both a language switch
+  // (aplicar(document)) and a router re-render (aplicar(appEl)) stay correct.
+  escopo.querySelectorAll('[data-lang]').forEach((bloco) => {
+    bloco.hidden = bloco.getAttribute('data-lang') !== idiomaAtual;
+  });
 }
 
 /* Set the active language, load it if needed, then re-apply document wide. */
@@ -124,7 +132,16 @@ function idioma() {
   return idiomaAtual;
 }
 
-const i18n = { aplicar, definirIdioma, idioma, IDIOMA_PADRAO };
+/*
+  Public single key lookup. Used by the chat step player to pull step and chip
+  copy by key at runtime (window.i18n.texto(chave)). Same fallback and warn
+  behaviour as the attribute driven path.
+*/
+function texto(chave) {
+  return traduzir(chave);
+}
+
+const i18n = { aplicar, definirIdioma, idioma, texto, IDIOMA_PADRAO };
 
 /* Initialise with the default language and apply it. */
 async function init() {
@@ -137,4 +154,4 @@ if (typeof window !== 'undefined') {
 }
 
 export default i18n;
-export { init, aplicar, definirIdioma, idioma };
+export { init, aplicar, definirIdioma, idioma, texto };

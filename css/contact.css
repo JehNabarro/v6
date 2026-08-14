@@ -1,0 +1,162 @@
+/*
+  contact.css
+  The contact page: heading, two prominent links, one minimal glass form.
+  Follows the layout language of the home hero (centred column, .glass
+  surfaces, accent glow, the shared grid and top glow behind it).
+*/
+
+.pagina-contacto {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--esp-lg);
+  padding: calc(var(--altura-cabecalho) + var(--esp-2xl)) var(--espaco-pagina) var(--esp-2xl);
+}
+
+.contacto-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-sm);
+}
+
+.contacto-titulo {
+  margin: 0;
+  font-size: var(--texto-titulo);
+  font-weight: var(--peso-forte);
+  line-height: 1.05;
+}
+
+.contacto-intro {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--cor-texto-suave);
+  font-size: var(--texto-subtitulo);
+}
+
+/* The two primary links: prominent glass pills. */
+.contacto-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-sm);
+  width: min(100%, var(--largura-chat-bar));
+}
+
+.contacto-link {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-xs);
+  padding: var(--esp-md);
+  border-radius: var(--raio-md);
+  color: var(--cor-texto);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.contacto-link:hover,
+.contacto-link:focus-visible {
+  border-color: var(--cor-destaque);
+  box-shadow:
+    inset 1px 1px 1px var(--cor-brilho),
+    var(--brilho-destaque);
+}
+
+.contacto-link__rotulo {
+  font-size: var(--texto-xs);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.contacto-link__valor {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-medio);
+  word-break: break-word;
+}
+
+/* One glass card holding the stacked fields, matching the home input treatment. */
+.contacto-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+  width: min(100%, var(--largura-chat-bar));
+  padding: var(--esp-md);
+  border-radius: var(--raio-md);
+  text-align: left;
+}
+
+.contacto-input {
+  width: 100%;
+  min-height: var(--alt-sm);
+  padding: var(--esp-xs) var(--esp-sm);
+  background: transparent;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  outline: none;
+  color: var(--cor-texto);
+  font-family: var(--fonte-principal);
+  font-size: var(--texto-base);
+  transition: border-color 0.2s ease;
+}
+
+.contacto-input::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+.contacto-input:focus {
+  border-color: var(--cor-destaque);
+}
+
+.contacto-textarea {
+  resize: vertical;
+  min-height: calc(var(--alt-sm) * 2);
+  line-height: 1.6;
+}
+
+/* Inline validation hint, shown by js/contact.js on error. */
+.contacto-erro {
+  margin: 0;
+  color: var(--cor-destaque-vivida);
+  font-size: var(--texto-sm);
+}
+
+/* Send button: labelled pill in the home send treatment, accent glow. */
+.contacto-enviar {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-xs);
+  height: var(--alt-sm);
+  padding: 0 var(--esp-md);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pill);
+  background: var(--cor-vidro);
+  color: var(--cor-texto);
+  font-size: var(--texto-base);
+  box-shadow: var(--brilho-destaque);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.contacto-enviar svg {
+  width: var(--esp-md);
+  height: var(--esp-md);
+}
+
+.contacto-enviar:hover,
+.contacto-enviar:focus-visible {
+  border-color: var(--cor-destaque);
+  box-shadow:
+    0 0 16px rgba(182, 94, 219, 0.65),
+    0 0 28px rgba(182, 94, 219, 0.40);
+}

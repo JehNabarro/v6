@@ -17,7 +17,7 @@
 */
 
 import camera from './camera.js';
-import { abrirChat } from './chat.js';
+import { abrirChat } from './chat/chat.js';
 
 /* A 1x1 transparent SVG, used when the avatar photo is missing. */
 const AVATAR_VAZIO =
@@ -64,6 +64,21 @@ function init() {
       return;
     }
 
+    // Projects page rows open the chat storytelling for the picked case, the
+    // same seam the home chips and the drawer project links use.
+    const projeto = alvo.closest('.projeto-item');
+    if (projeto) {
+      registrarIntent(projeto.dataset.intent || '');
+      return;
+    }
+
+    // Case page "back to projects": open the chat at the project list intent.
+    const voltarProjetos = alvo.closest('[data-nav-projetos]');
+    if (voltarProjetos) {
+      registrarIntent('projetos');
+      return;
+    }
+
     const scrollLink = alvo.closest('[data-scroll-explore]');
     if (scrollLink) {
       irParaExplorar();
@@ -81,20 +96,27 @@ function init() {
     }
   });
 
-  // Avatar fallback. The error event does not bubble, so we listen in the
-  // capture phase and match the target by class.
+  // Optional image fallback. The error event does not bubble, so we listen in
+  // the capture phase and match the target by class. Covers the hero avatar and
+  // the About page photos: when the file is missing we swap in an empty image so
+  // the broken glyph disappears and the ringed frame still holds (background
+  // fill). Each optional image class has its own --vazio state in CSS.
+  const OPCIONAIS = {
+    'home-avatar': 'home-avatar--vazio',
+    'sobre-foto__img': 'sobre-foto__img--vazio',
+  };
   document.addEventListener(
     'error',
     (evento) => {
       const alvo = evento.target;
-      if (
-        alvo &&
-        alvo.classList &&
-        alvo.classList.contains('home-avatar') &&
-        alvo.getAttribute('src') !== AVATAR_VAZIO
-      ) {
-        alvo.classList.add('home-avatar--vazio');
-        alvo.src = AVATAR_VAZIO; // remove the broken image glyph, keep the ring
+      if (!alvo || !alvo.classList) return;
+      if (alvo.getAttribute('src') === AVATAR_VAZIO) return;
+      for (const [classe, vazio] of Object.entries(OPCIONAIS)) {
+        if (alvo.classList.contains(classe)) {
+          alvo.classList.add(vazio);
+          alvo.src = AVATAR_VAZIO; // remove the broken image glyph, keep the ring
+          return;
+        }
       }
     },
     true

@@ -1,0 +1,137 @@
+/*
+  about.css
+  The "Quem sou eu" editorial page.
+
+  Desktop is a 5 column grid on the 64px base: columns 1 and 5 are the page
+  margins, the three inner columns are content sized as multiples of 64px so the
+  layout sits on the background grid. Photo 1 sits upper left, the text runs down
+  the centre spanning both rows, photo 2 sits lower right (a diagonal, balanced
+  composition). It is authored mobile first: a single column that stacks photo 1,
+  the text, then photo 2, so the copy stays readable between the two photos.
+*/
+
+.pagina-sobre {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-lg);
+  align-items: center;
+  padding: calc(var(--altura-cabecalho) + var(--esp-2xl)) var(--espaco-pagina) var(--esp-2xl);
+}
+
+/* Photos: portrait 4/5, rounded, cover. The frame holds even when the image is
+   missing: a neutral --cor-bloco fill plus a subtle accent ring. */
+.sobre-foto {
+  margin: 0;
+}
+
+.sobre-foto__img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--raio-md);
+  background: var(--cor-bloco);
+  border: 1px solid var(--cor-borda);
+  box-shadow:
+    inset 0 0 0 1px var(--cor-brilho),
+    0 8px 32px var(--cor-sombra);
+}
+
+/* When the photo is absent (js/home.js swaps in an empty image), lift the ring
+   to the accent so the empty frame still reads as intentional. */
+.sobre-foto__img--vazio {
+  border-color: var(--cor-destaque);
+  box-shadow:
+    inset 0 0 0 1px var(--cor-brilho),
+    var(--brilho-destaque);
+}
+
+/* Text: comfortable reading measure, generous line height, subgrid spacing. */
+.sobre-texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-md);
+  max-width: 60ch;
+}
+
+.sobre-eyebrow {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.sobre-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+}
+
+/* The author display above beats the UA [hidden] rule, so the inactive language
+   block would still render. Restore the hide explicitly. */
+.sobre-corpo[hidden] {
+  display: none;
+}
+
+.sobre-corpo p {
+  margin: 0;
+  font-size: var(--texto-base);
+  line-height: 1.6;
+  color: var(--cor-texto-suave);
+}
+
+/* Lead line: larger and full strength. */
+.sobre-corpo p:first-child {
+  font-size: var(--texto-lg);
+  color: var(--cor-texto);
+}
+
+/* ---------------------------------------------------------------- */
+/* Tablet: the 5 column grid, inner columns allowed to shrink.      */
+/* ---------------------------------------------------------------- */
+@media (min-width: 768px) {
+  .pagina-sobre {
+    grid-template-columns:
+      minmax(var(--esp-md), 1fr) /* col1: left margin */
+      minmax(0, 256px)           /* col2: photo, 4 cells */
+      minmax(0, 512px)           /* col3: text, 8 cells */
+      minmax(0, 256px)           /* col4: photo, 4 cells */
+      minmax(var(--esp-md), 1fr); /* col5: right margin */
+    column-gap: var(--esp-lg);
+    row-gap: var(--esp-lg);
+  }
+
+  .sobre-foto--1 {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  /* The text is one block spanning both rows in the centre column. */
+  .sobre-texto {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    max-width: none;
+  }
+
+  .sobre-foto--2 {
+    grid-column: 4;
+    grid-row: 2;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Desktop: fixed inner widths, full 64px gaps (one grid cell).     */
+/* ---------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  .pagina-sobre {
+    grid-template-columns:
+      minmax(var(--esp-md), 1fr) /* col1: left margin */
+      256px                      /* col2: photo, 4 cells */
+      512px                      /* col3: text, 8 cells */
+      256px                      /* col4: photo, 4 cells */
+      minmax(var(--esp-md), 1fr); /* col5: right margin */
+    column-gap: var(--esp-xl);
+    row-gap: var(--esp-xl);
+  }
+}

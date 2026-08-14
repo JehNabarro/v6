@@ -1,0 +1,273 @@
+/*
+  chat.css
+  The chat as an on-page context (#chat), not a box. Imported after style.css.
+
+  The chat lives over the grid with no panel and no backdrop. Only the input
+  pill and the chips keep the single .glass token (defined once in style.css);
+  the story text sits directly on the page. Widths use percentages, min() and
+  width tokens, so nothing overflows; the input's descend on open is a single
+  transform tween set inline by GSAP.
+
+  Layout (top to bottom):
+    .chat-topo      Back control, then the asked-question chips (the trail)
+    .chat-corpo     the scrollable story, flex 1
+    .chat-suporte   the suggestion chips, then the input pill (bottom cluster)
+*/
+
+/* ---------------------------------------------------------------- */
+/* The surface (== #chat). Full viewport, no background of its own.  */
+/* It only occupies space while OPEN: the layout is gated on the     */
+/* .esta-aberto state (added on open, removed on close) so the empty */
+/* shell never overlaps the resting home. This wins over the base    */
+/* #chat[hidden] rule regardless of source order.                    */
+/* ---------------------------------------------------------------- */
+#chat:not(.esta-aberto) {
+  display: none;
+}
+
+#chat.esta-aberto {
+  /* Clear the Phase 1 inset:0 shorthand so the box is the full viewport with
+     padding, not pinned by right/bottom. */
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  /* Clear the fixed header at the top; hold the input 128px off the bottom. */
+  padding: calc(var(--altura-cabecalho) + var(--esp-xl)) var(--espaco-pagina) var(--esp-2xl);
+  /* pointer-events:none is inherited from the #chat base rule; the centred
+     column opts back in so clicks outside it fall through to the page. */
+}
+
+.chat-interno {
+  width: min(100%, var(--largura-chat-bar));
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+/* ---- Top: back control, then the asked-question chips ---- */
+.chat-topo {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-sm);
+}
+
+.chat-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-xs);
+  padding: var(--esp-xs) 0;
+  color: var(--cor-texto-suave);
+  font-family: var(--fonte-principal);
+  font-size: var(--texto-sm);
+  transition: color 0.2s ease;
+}
+
+.chat-voltar:hover,
+.chat-voltar:focus-visible {
+  color: var(--cor-texto);
+}
+
+.chat-voltar svg {
+  width: var(--esp-md);
+  height: var(--esp-md);
+}
+
+.chat-caminho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-xs);
+  min-width: 0;
+}
+
+/* Trail chips are the smaller sibling of the suggestion chips. */
+.chat-trilha-chip {
+  height: 32px;
+  padding: 0 var(--esp-sm);
+  font-size: var(--texto-xs);
+}
+
+.chat-trilha-chip[aria-current="true"] {
+  border-color: var(--cor-destaque);
+}
+
+/* ---- Middle: the scrollable story, on the grid ---- */
+.chat-corpo {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--esp-lg);
+}
+
+/* Stacked steps read as one building story. */
+.chat-passo + .chat-passo {
+  margin-top: var(--esp-md);
+}
+
+.chat-resposta {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--cor-texto);
+  font-size: var(--texto-lg);
+  line-height: 1.55;
+}
+
+/* Typing indicator: three pulsing dots (reused from jessy). */
+.chat-digitando {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--esp-xs) 0;
+}
+
+.chat-digitando span {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--raio-circulo);
+  background: var(--cor-marca-media);
+  animation: pulsar 1.2s ease-in-out infinite;
+}
+
+.chat-digitando span:nth-child(2) { animation-delay: 0.15s; }
+.chat-digitando span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes pulsar {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* Continue: the affordance to advance the story. */
+.chat-continuar {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-xs);
+  height: var(--alt-xs);
+  margin-top: var(--esp-md);
+  padding: 0 var(--esp-md);
+  border: 1px solid var(--cor-destaque);
+  border-radius: var(--raio-pill);
+  background: transparent;
+  color: var(--cor-destaque);
+  font-family: var(--fonte-principal);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.chat-continuar:hover,
+.chat-continuar:focus-visible {
+  box-shadow: var(--brilho-destaque);
+}
+
+/* ---- Bottom cluster: suggestions 32px above the input ---- */
+.chat-suporte {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-lg); /* 32px between the suggestions and the input */
+}
+
+.chat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-xs);
+}
+
+/* No empty row (and no stray 32px gap) before any suggestions exist. */
+.chat-chips:empty {
+  display: none;
+}
+
+.chat-chip-caso {
+  border-color: var(--cor-destaque);
+  color: var(--cor-marca-clara);
+}
+
+/* The input pill: reuses .glass, mirrors the hero search it descends from. */
+.chat-form {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-sm);
+  width: 100%;
+  padding: var(--esp-xs) var(--esp-xs) var(--esp-xs) var(--esp-md);
+  border-radius: var(--raio-pill);
+  transition: border-color 0.2s ease;
+}
+
+.chat-form:focus-within {
+  border-color: var(--cor-destaque);
+}
+
+.chat-form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: var(--alt-sm);
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cor-texto);
+  font-family: var(--fonte-principal);
+  font-size: var(--texto-lg);
+}
+
+.chat-form input::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+.chat-enviar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--alt-sm);
+  height: var(--alt-sm);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-circulo);
+  background: var(--cor-vidro);
+  color: var(--cor-texto);
+  box-shadow: var(--brilho-destaque);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-enviar:hover,
+.chat-enviar:focus-visible {
+  border-color: var(--cor-destaque);
+  box-shadow:
+    0 0 16px rgba(182, 94, 219, 0.65),
+    0 0 28px rgba(182, 94, 219, 0.40);
+}
+
+.chat-enviar svg {
+  width: var(--esp-md);
+  height: var(--esp-md);
+}
+
+/* ---------------------------------------------------------------- */
+/* Mobile: hold the input clear of the very bottom, but not 128px.   */
+/* ---------------------------------------------------------------- */
+@media (max-width: 767px) {
+  #chat.esta-aberto {
+    padding-top: calc(var(--altura-cabecalho) + var(--esp-lg));
+    padding-bottom: var(--esp-xl); /* 64px */
+  }
+
+  .chat-resposta {
+    font-size: var(--texto-base);
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Reduced motion: no pulsing dots (the JS also skips typing beats). */
+/* ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .chat-digitando span {
+    animation: none;
+  }
+}

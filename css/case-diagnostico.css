@@ -1,0 +1,269 @@
+/*
+  case-diagnostico.css
+  The Leadership Diagnostic case page. Bespoke to this story and fully scoped
+  with the diag- prefix so it never leaks into the other case pages. It reuses
+  only the shared foundation: tokens, the single .glass token, the 64px grid and
+  the header. Imported after style.css.
+
+  Layout: a centred reading column on the 64px grid, sections spaced on the 8px
+  subgrid, a solution first hero, then the narrative sections with the
+  architecture shift emphasised, the two user profiles as glass cards, and
+  labelled media placeholders where diagrams and before/after images will go.
+*/
+
+/* ---------------------------------------------------------------- */
+/* Page shell: centred reading column, cleared header, subgrid rhythm */
+/* ---------------------------------------------------------------- */
+.pagina-diagnostico {
+  --diag-medida: 68ch;      /* reading measure, around 60 to 70 characters */
+  --diag-coluna: min(100%, 760px); /* text column cap, on the grid rhythm */
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--altura-cabecalho) + var(--esp-2xl)) var(--espaco-pagina) var(--esp-2xl);
+  gap: var(--esp-2xl);
+}
+
+/* The bilingual wrapper and each language block are a single flowing column. */
+.diag-corpo,
+.diag-corpo > [data-lang] {
+  width: var(--diag-coluna);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2xl);
+}
+
+.diag-corpo > [data-lang] {
+  width: 100%;
+}
+
+/* A flex parent beats the UA [hidden] rule, so restore the hide explicitly
+   (same pattern the About page uses for its [data-lang] blocks). */
+.diag-corpo > [data-lang][hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Hero: solution first                                             */
+/* ---------------------------------------------------------------- */
+.diag-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-md);
+}
+
+.diag-titulo {
+  margin: 0;
+  /* One step down from the home title so the case reads as a chapter, not the
+     landing hero. */
+  font-size: clamp(28px, min(6vw, 6dvh), 56px);
+  font-weight: var(--peso-forte);
+  line-height: 1.05;
+}
+
+/* The one line solution summary: prominent, full strength text. */
+.diag-solucao {
+  margin: 0;
+  max-width: var(--diag-medida);
+  font-size: var(--texto-subtitulo);
+  line-height: 1.5;
+  color: var(--cor-texto);
+}
+
+/* Confidential note: small and muted. */
+.diag-nota {
+  margin: 0;
+  font-size: var(--texto-sm);
+  color: var(--cor-texto-suave);
+}
+
+/* ---------------------------------------------------------------- */
+/* Narrative sections                                               */
+/* ---------------------------------------------------------------- */
+.diag-secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-md);
+}
+
+/* Section heading: a short accent rule above the title, consistent with the
+   home eyebrow cue, then a clear heading and body. */
+.diag-secao h2 {
+  position: relative;
+  margin: 0;
+  padding-top: var(--esp-sm);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: var(--peso-forte);
+  line-height: 1.15;
+  color: var(--cor-texto);
+}
+
+.diag-secao h2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--esp-lg); /* 32px accent rule */
+  height: 2px;
+  border-radius: var(--raio-pill);
+  background: var(--cor-destaque);
+  box-shadow: var(--brilho-destaque);
+}
+
+.diag-secao p {
+  margin: 0;
+  max-width: var(--diag-medida);
+  font-size: var(--texto-base);
+  line-height: 1.6;
+  color: var(--cor-texto);
+}
+
+/* The context list reads as short labelled lines, quieter than the body prose.
+   The bracketed placeholders inside stay visible for Jessica to fill in. */
+.diag-contexto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-xs);
+  max-width: var(--diag-medida);
+}
+
+.diag-contexto li {
+  font-size: var(--texto-base);
+  line-height: 1.6;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------------------------------------------------------------- */
+/* The architecture shift: the core UX decision, visually emphasised */
+/* ---------------------------------------------------------------- */
+.diag-secao--viragem {
+  padding: var(--esp-lg);
+  border-left: 2px solid var(--cor-destaque);
+  border-radius: 0 var(--raio-md) var(--raio-md) 0;
+  background: var(--cor-superficie-suave);
+  box-shadow: inset 1px 0 0 var(--cor-brilho);
+}
+
+/* Inside the emphasised block the rule cue is redundant, so drop it. */
+.diag-secao--viragem h2 {
+  padding-top: 0;
+}
+
+.diag-secao--viragem h2::before {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Media placeholder: labelled frame, wider than the text column     */
+/* ---------------------------------------------------------------- */
+.diag-media {
+  position: relative;
+  /* Allowed to breathe slightly wider than the reading measure so diagrams and
+     before/after comparisons are legible. Never wider than the viewport. */
+  width: min(100%, 920px);
+  margin: var(--esp-xs) 0 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--raio-md);
+  background: var(--cor-bloco);
+  border: 1px solid var(--cor-destaque);
+  box-shadow:
+    inset 0 0 0 1px var(--cor-brilho),
+    var(--brilho-destaque);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* The data-media attribute names what image belongs here. */
+.diag-media::after {
+  content: attr(data-media);
+  padding: var(--esp-sm) var(--esp-md);
+  max-width: 40ch;
+  text-align: center;
+  font-size: var(--texto-sm);
+  letter-spacing: 0.04em;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------------------------------------------------------------- */
+/* User profiles: two glass cards, side by side on desktop           */
+/* ---------------------------------------------------------------- */
+.diag-perfis-grade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-md);
+}
+
+.diag-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-xs);
+  padding: var(--esp-md);
+  border-radius: var(--raio-md);
+}
+
+.diag-perfil h3 {
+  margin: 0;
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto);
+}
+
+.diag-perfil p {
+  margin: 0;
+  font-size: var(--texto-base);
+  line-height: 1.6;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------------------------------------------------------------- */
+/* Footer nav: back to projects, next case                          */
+/* ---------------------------------------------------------------- */
+.diag-nav {
+  width: var(--diag-coluna);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-sm);
+  padding-top: var(--esp-lg);
+  border-top: 1px solid var(--cor-borda);
+}
+
+.diag-nav button,
+.diag-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-xs);
+  min-height: var(--alt-xs);
+  padding: 0 var(--esp-md);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pill);
+  color: var(--cor-texto);
+  font-size: var(--texto-base);
+  transition:
+    border-color var(--duracao-rapida) ease,
+    box-shadow var(--duracao-rapida) ease;
+}
+
+.diag-nav a {
+  box-shadow: var(--brilho-destaque);
+}
+
+.diag-nav button:hover,
+.diag-nav button:focus-visible,
+.diag-nav a:hover,
+.diag-nav a:focus-visible {
+  border-color: var(--cor-destaque);
+}
+
+/* ---------------------------------------------------------------- */
+/* Responsive: two profile columns on desktop, comfortable rhythm    */
+/* ---------------------------------------------------------------- */
+@media (min-width: 768px) {
+  .diag-perfis-grade {
+    grid-template-columns: 1fr 1fr;
+  }
+}

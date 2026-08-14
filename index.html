@@ -22,11 +22,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Glory:wght@400;600;800&display=swap" rel="stylesheet">
   -->
 
-  <!-- Tokens first, then fonts, reset and base styles. -->
+  <!-- Tokens first, then fonts, reset and base styles. Page modules (menu,
+       contact, about) sit on top of the base. Chat styles last so they layer
+       over the base #chat mount rules from style.css. -->
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Case pages: each is a bespoke, prefixed stylesheet imported after the
+       base so it can shape its own page without leaking into the others. -->
+  <link rel="stylesheet" href="css/case-diagnostico.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/projects.css">
+  <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
@@ -109,12 +119,63 @@
       </svg>
     </a>
 
-    <button class="botao-menu precisa-js" type="button" data-i18n="nav.menu" data-i18n-attr="aria-label">
-      <svg class="botao-menu__icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
+    <!-- Hamburger: three bars that morph to an X (see css/menu.css). The
+         aria-label is managed in js/header.js so it can flip between open and
+         close; aria-controls points at the drawer. -->
+    <button class="botao-menu glass precisa-js" type="button" aria-expanded="false"
+      aria-controls="drawer-menu">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
   </header>
+
+  <!--
+    Navigation drawer. Slides in from the right (css/menu.css), driven by
+    js/header.js which toggles body.drawer-aberto. Hierarchy: a Projects group
+    (each opens the chat storytelling for that case), the primary section links,
+    and a language toggle in the footer. Links are real anchors so navigation
+    works even before the JS enhances them.
+  -->
+  <aside class="drawer-menu glass precisa-js" id="drawer-menu" aria-hidden="true">
+    <nav class="drawer-nav" data-i18n="nav.menu" data-i18n-attr="aria-label">
+      <!-- Reading order: Home, About, Projects, Contact. All four are section
+           links that share one weight. Projects opens its own page (#projects);
+           the project case links sit nested just under it, keeping the accent
+           line in front but carrying the same visual weight as everything else.
+           Project buttons open abrirChat(intent); once the dedicated case pages
+           exist they can point at their own routes. -->
+      <a class="drawer-link" href="#home" data-i18n="menu.home"></a>
+      <a class="drawer-link" href="#about" data-i18n="menu.about"></a>
+
+      <a class="drawer-link" href="#projects" data-i18n="menu.projects"></a>
+      <ul class="drawer-projetos">
+        <!-- Leadership Diagnostic has its own case page, so its link routes to
+             #diagnostico. The remaining projects keep opening the chat
+             storytelling until their own pages are built. -->
+        <li><a class="drawer-projeto" href="#diagnostico"
+            data-i18n="chat.chip.diagnostico"></a></li>
+        <li><button class="drawer-projeto" type="button" data-intent="motorline"
+            data-i18n="chat.chip.motorline"></button></li>
+        <li><button class="drawer-projeto" type="button" data-intent="momentos"
+            data-i18n="chat.chip.momentos"></button></li>
+        <li><button class="drawer-projeto" type="button" data-intent="coinple"
+            data-i18n="chat.chip.coinple"></button></li>
+      </ul>
+
+      <a class="drawer-link" href="#contact" data-i18n="menu.contact"></a>
+    </nav>
+
+    <!-- Footer: the visible language control. Uses data-lang-set (not data-lang,
+         which the About page reserves for its bilingual copy blocks). -->
+    <div class="drawer-rodape">
+      <p class="drawer-rotulo" data-i18n="menu.idioma_label"></p>
+      <div class="drawer-idiomas" role="group" data-i18n="menu.idioma_label" data-i18n-attr="aria-label">
+        <button class="drawer-idioma" type="button" data-lang-set="en">EN</button>
+        <button class="drawer-idioma" type="button" data-lang-set="pt">PT</button>
+      </div>
+    </div>
+  </aside>
 
   <!-- App region: the router clones the active route template here. -->
   <main id="app"></main>
@@ -129,23 +190,23 @@
   <!-- Route templates. -->
   <template data-route="home">
     <section class="pagina-home">
-      <!-- Eyebrow with a short accent rule under it. -->
-      <p class="home-eyebrow" data-i18n="home.eyebrow"></p>
-      <span class="home-eyebrow-rule" aria-hidden="true"></span>
-
-      <!-- Title row: white "I'm" plus the gradient name, with the ringed
+      <div class="home-copy">
+        <!-- Eyebrow with a short accent rule under it. -->
+        <p class="home-eyebrow" data-i18n="home.eyebrow"></p>
+        <!-- Title row: white "I'm" plus the gradient name, with the ringed
            avatar inline just after the name. -->
-      <div class="home-title-row">
-        <h1 class="home-title" data-i18n-html="home.title"></h1>
-        <!-- The real photo goes here (assets/img/avatar.jpg). If it is absent,
+        <div class="home-title-row">
+          <h1 class="home-title" data-i18n-html="home.title"></h1>
+          <!-- The real photo goes here (assets/img/avatar.jpg). If it is absent,
              js/home.js swaps in an empty image and the ringed circle still
              holds with a neutral --cor-bloco fill. -->
-        <img class="home-avatar" src="assets/img/avatar.jpg" alt="" data-i18n-alt="home.avatar_alt" />
+          <img class="home-avatar" src="assets/img/avatar.png" alt="" data-i18n-alt="home.avatar_alt" />
+        </div>
+
+        <!-- Subtitle with the accent "UI/UX designer" span. -->
+        <p class="home-subtitle" data-i18n-html="home.subtitle"></p>
+
       </div>
-
-      <!-- Subtitle with the accent "UI/UX designer" span. -->
-      <p class="home-subtitle" data-i18n-html="home.subtitle"></p>
-
       <!-- Search field: the chat in its resting state. -->
       <div class="home-search glass" role="search">
         <input class="home-search__input" type="text" autocomplete="off"
@@ -199,8 +260,305 @@
   </template>
 
   <template data-route="about">
-    <section class="secao secao--about">
-      <h1 class="titulo" data-i18n="about.title"></h1>
+    <!--
+      Editorial 5 column grid on the 64px base (see css/about.css): photo 1 upper
+      left, the text down the centre spanning both rows, photo 2 lower right. On
+      mobile it collapses to one column in DOM order (photo 1, text, photo 2).
+    -->
+    <section class="pagina-sobre">
+      <!-- Photo 1. Real image: assets/img/sobre-1.jpg. If missing, the frame
+           holds with a neutral fill and accent ring (js/home.js clears the
+           broken glyph). -->
+      <figure class="sobre-foto sobre-foto--1">
+        <img class="sobre-foto__img" src="assets/img/sobre-1.jpg" alt="" data-i18n-alt="about.foto1_alt" />
+      </figure>
+
+      <div class="sobre-texto">
+        <p class="sobre-eyebrow" data-i18n="about.title"></p>
+
+        <!-- Long form copy is too long for the JSON, so it lives here as two
+             sibling blocks. js/i18n.js shows the one matching the active
+             language and hides the other, with no reload. -->
+        <div class="sobre-corpo" data-lang="en">
+          <p>I like complications. Especially the ones no one really knows how to solve.</p>
+          <p>I'm Jéssica, a designer. My path went through design, technology, programming, marketing and digital
+            products. Somewhere in there, I found out what I really enjoyed: understanding problems and figuring out how
+            to solve them. That's when UX made sense.</p>
+          <p>For me, design isn't only about making something pretty. It's about making the complicated feel simple.</p>
+          <p>I like to understand the why before I decide the how. I question, organise, test and get my hands dirty.</p>
+          <p>I also like technology. Understanding how things are built helps me create solutions that work outside
+            Figma, and it helps me talk to the people who will bring them to life.</p>
+          <p>I don't fit neatly into one box. I like strategy, but I like the details too. I like a good interface, above
+            all when it doesn't need to shout to work.</p>
+          <p>In the end, it's simple: understand the complicated, keep what matters and build something that makes sense.
+            And when it works, people don't notice the effort behind it. They just use it.</p>
+        </div>
+
+        <div class="sobre-corpo" data-lang="pt" hidden>
+          <p>Gosto de complicações. Sobretudo das que ninguém sabe bem como resolver.</p>
+          <p>Sou a Jéssica, designer. O meu caminho passou por design, tecnologia, programação, marketing e produtos
+            digitais. Algures por aí, descobri o que gosto mesmo de fazer: perceber problemas e descobrir como
+            resolvê-los. Foi aí que o UX fez sentido.</p>
+          <p>Para mim, design não é só tornar algo bonito. É tornar o complicado simples.</p>
+          <p>Gosto de perceber o porquê antes de decidir o como. Questiono, organizo, testo e meto as mãos na massa.</p>
+          <p>Também gosto de tecnologia. Perceber como as coisas são construídas ajuda-me a criar soluções que funcionam
+            fora do Figma, e ajuda-me a falar com quem as vai concretizar.</p>
+          <p>Não caibo certinho numa caixa só. Gosto de estratégia, mas também gosto dos detalhes. Gosto de uma boa
+            interface, sobretudo quando não precisa de gritar para funcionar.</p>
+          <p>No fim, é simples: perceber o complicado, manter o que importa e construir algo que faça sentido. E quando
+            funciona, as pessoas não notam o esforço por trás. Simplesmente usam.</p>
+        </div>
+      </div>
+
+      <!-- Photo 2. Real image: assets/img/sobre-2.jpg. Same fallback as photo 1. -->
+      <figure class="sobre-foto sobre-foto--2">
+        <img class="sobre-foto__img" src="assets/img/sobre-2.jpg" alt="" data-i18n-alt="about.foto2_alt" />
+      </figure>
+    </section>
+  </template>
+
+  <template data-route="projects">
+    <!--
+      Projects page (css/projects.css). A heading, a short intro, then the four
+      cases as a stacked list. Each row keeps the accent line in front (the same
+      cue the menu uses) and carries the same visual weight; clicking a row opens
+      the chat storytelling for that case via js/home.js (data-intent).
+    -->
+    <section class="pagina-projetos">
+      <div class="projetos-copy">
+        <h1 class="projetos-titulo" data-i18n="projects.title"></h1>
+        <p class="projetos-intro" data-i18n="projects.intro"></p>
+      </div>
+
+      <ul class="projetos-lista">
+        <li>
+          <button class="projeto-item" type="button" data-intent="diagnostico">
+            <span class="projeto-item__nome" data-i18n="chat.chip.diagnostico"></span>
+            <span class="projeto-item__desc" data-i18n="projects.diagnostico_desc"></span>
+          </button>
+        </li>
+        <li>
+          <button class="projeto-item" type="button" data-intent="motorline">
+            <span class="projeto-item__nome" data-i18n="chat.chip.motorline"></span>
+            <span class="projeto-item__desc" data-i18n="projects.motorline_desc"></span>
+          </button>
+        </li>
+        <li>
+          <button class="projeto-item" type="button" data-intent="momentos">
+            <span class="projeto-item__nome" data-i18n="chat.chip.momentos"></span>
+            <span class="projeto-item__desc" data-i18n="projects.momentos_desc"></span>
+          </button>
+        </li>
+        <li>
+          <button class="projeto-item" type="button" data-intent="coinple">
+            <span class="projeto-item__nome" data-i18n="chat.chip.coinple"></span>
+            <span class="projeto-item__desc" data-i18n="projects.coinple_desc"></span>
+          </button>
+        </li>
+      </ul>
+    </section>
+  </template>
+
+  <template data-route="diagnostico">
+    <!--
+      Leadership Diagnostic case page (css/case-diagnostico.css). A normal
+      scrolling page cloned into #app by the router; no chat overlay. The full
+      case is authored as two sibling [data-lang] blocks (the same mechanism the
+      About page uses); definirIdioma toggles their visibility with no reload.
+      The three context fields stay as visible bracketed placeholders, in both
+      languages, for Jessica to fill in.
+    -->
+    <section class="pagina-diagnostico">
+      <div class="diag-corpo">
+        <!-- English (default). -->
+        <div data-lang="en">
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Leadership Diagnostic</h1>
+            <p class="diag-solucao">Consultants spent an average of six hours writing a single report. The system was designed to attack that number from two sides: bring every participant document into one place, a search away, and put an AI in the flow that flags inconsistencies while the consultant writes.</p>
+            <p class="diag-nota">(fictitious name under a confidentiality agreement)</p>
+          </header>
+
+          <div class="diag-secao">
+            <h2>What the system solved</h2>
+            <p>The bottleneck was not the writing, it was the gathering. The consultant lost hours hunting for scattered documents before even starting the report, then reviewing by hand for contradictions. The system centralised clients, participants, consultants and projects into a single manager, made every document available at once, and handed the consistency check to an AI. The consultant goes back to doing the one thing only they can do: analyse.</p>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Context</h2>
+            <ul class="diag-contexto">
+              <li>Sector: leadership diagnostics consulting.</li>
+              <li>My role: [fill in, for example UX/UI and low-code development, from the site map to the redesign].</li>
+              <li>Format: [solo or team, and timeframe].</li>
+              <li>Stack: low-code, Figma, data modelling, AI integration.</li>
+            </ul>
+          </div>
+
+          <div class="diag-secao diag-perfis">
+            <h2>Users</h2>
+            <div class="diag-perfis-grade">
+              <article class="diag-perfil glass">
+                <h3>Consultants</h3>
+                <p>Consultants wrote the reports and carried the six hours. They needed the context gathered and less rework in review.</p>
+              </article>
+              <article class="diag-perfil glass">
+                <h3>Administrators</h3>
+                <p>Administrators managed clients, participants, consultants and projects. They needed to find any record fast, without walking through several screens.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="diag-secao">
+            <h2>The constraint: build before design</h2>
+            <p>Development started before there was a layout. I modelled the data and structured the application straight in low-code, function first. The first prototype was deliberately raw in its visuals, focused only on proving the flow closed. Only once it was running did I apply usability tests and reverse engineer the experience.</p>
+          </div>
+
+          <div class="diag-secao diag-secao--viragem">
+            <h2>The architecture shift</h2>
+            <p>The most expensive problem was not visual, it was flow. To complete a registration, the user entered and exited at every step: answered, went back, entered again. I rebuilt the information architecture so that, once the cycle began, every step followed in sequence without leaving the screen. The site map, vertical before, became horizontal, mirroring that continuous flow.</p>
+            <figure class="diag-media" data-media="vertical to horizontal site map, before and after"></figure>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Data modelling</h2>
+            <p>I documented the structure behind the application: how clients, participants, consultants, projects and documents relate. That base is what made any record reachable fast and held the report flow together from end to end.</p>
+          </div>
+
+          <div class="diag-secao">
+            <h2>The AI in the flow</h2>
+            <p>The differentiator that hit the six hours directly. While the consultant writes the report, the AI reviews and points out inconsistencies in the text. The consistency check, once manual and slow, moved into the writing itself rather than after it.</p>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Redesign</h2>
+            <p>The redesign came from a decision about context, not taste: administrators spend the whole day on the screen. I removed the white background to cut visual fatigue in prolonged use, and used grey at the top to separate the main action area and lift the brand. I standardised icons, colours, borders and buttons for predictability. I brought recent information and projects to the home, so a search for any client or company started already resolved. The breadcrumb sat above the page name, making the path taken clear.</p>
+            <figure class="diag-media" data-media="redesign, before and after"></figure>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Where the project stopped</h2>
+            <p>Production was halted by the end of investment, before launch. The system never measured the six hour reduction in real use. What remains is a solution designed and technically built for that target, and a lesson I carry with me: shipping function first in low-code gave me a real product to test early, but it demanded the discipline to refactor the architecture later, rather than letting the initial technical decisions freeze the experience.</p>
+          </div>
+        </div>
+
+        <!-- European Portuguese (shown by the language toggle). -->
+        <div data-lang="pt" hidden>
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Diagnóstico de Liderança</h1>
+            <p class="diag-solucao">Os consultores gastavam, em média, seis horas para redigir um único relatório. O sistema foi desenhado para atacar esse número por dois lados: reunir todos os documentos do participante num só lugar, a uma pesquisa de distância, e colocar uma IA no fluxo que aponta incongruências enquanto o consultor escreve.</p>
+            <p class="diag-nota">(nome fictício por acordo de confidencialidade)</p>
+          </header>
+
+          <div class="diag-secao">
+            <h2>O que o sistema resolvia</h2>
+            <p>O estrangulamento não era escrever, era juntar. O consultor perdia horas à procura de documentos espalhados antes mesmo de começar o relatório, e depois a rever à mão à procura de contradições. O sistema centralizou clientes, participantes, consultores e projetos num único gestor, deixou cada documento acessível na hora, e delegou a verificação de incongruências a uma IA. O consultor volta a fazer o que só ele faz: analisar.</p>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Contexto</h2>
+            <ul class="diag-contexto">
+              <li>Setor: consultoria de diagnóstico de liderança.</li>
+              <li>O meu papel: [preencher, por exemplo UX/UI e desenvolvimento low-code, do mapa do site ao redesign].</li>
+              <li>Formato: [solo ou equipa, e período].</li>
+              <li>Stack: low-code, Figma, modelação de dados, integração de IA.</li>
+            </ul>
+          </div>
+
+          <div class="diag-secao diag-perfis">
+            <h2>Utilizadores</h2>
+            <div class="diag-perfis-grade">
+              <article class="diag-perfil glass">
+                <h3>Consultores</h3>
+                <p>Os consultores escreviam os relatórios e carregavam as seis horas. Precisavam do contexto reunido e de menos retrabalho de revisão.</p>
+              </article>
+              <article class="diag-perfil glass">
+                <h3>Administradores</h3>
+                <p>Os administradores geriam clientes, participantes, consultores e projetos. Precisavam de encontrar qualquer registo depressa, sem navegar por vários ecrãs.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="diag-secao">
+            <h2>A restrição: construir antes de desenhar</h2>
+            <p>O desenvolvimento começou antes de existir layout. Modelei os dados e estruturei a aplicação diretamente no low-code, função primeiro. O primeiro protótipo era propositadamente cru no visual, focado só em provar que o fluxo fechava. Só depois de a correr é que apliquei testes de usabilidade e fiz a engenharia inversa da experiência.</p>
+          </div>
+
+          <div class="diag-secao diag-secao--viragem">
+            <h2>A viragem de arquitetura</h2>
+            <p>O problema mais caro não era visual, era de fluxo. Para completar um registo, o utilizador entrava e saía a cada etapa: respondia, voltava, entrava de novo. Refiz a arquitetura de informação para que, uma vez iniciado o ciclo, todas as etapas seguissem em sequência, sem sair do ecrã. O mapa do site, antes vertical, passou a horizontal, refletindo esse fluxo contínuo.</p>
+            <figure class="diag-media" data-media="mapa do site vertical para horizontal, antes e depois"></figure>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Modelação de dados</h2>
+            <p>Documentei a estrutura por trás da aplicação: como clientes, participantes, consultores, projetos e documentos se relacionam. Foi essa base que permitiu o acesso rápido a qualquer registo e sustentou o fluxo de relatório de ponta a ponta.</p>
+          </div>
+
+          <div class="diag-secao">
+            <h2>A IA no fluxo</h2>
+            <p>O diferencial que atacava diretamente as seis horas. Enquanto o consultor escreve o relatório, a IA revê e aponta incongruências no texto. A verificação de consistência, antes manual e demorada, passou a acontecer durante a escrita, não depois dela.</p>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Redesign</h2>
+            <p>O redesenho partiu de uma decisão de contexto, não de gosto: os administradores passam o dia inteiro no ecrã. Retirei o fundo branco para reduzir o cansaço visual em uso prolongado, e usei o cinzento no topo para separar a área de ação principal e destacar a marca. Padronizei ícones, cores, bordas e botões para dar previsibilidade. Trouxe informação e projetos recentes para a página inicial, de modo que a pesquisa por qualquer cliente ou empresa começasse já resolvida. O caminho de navegação ficou acima do nome da página, deixando claro o caminho percorrido.</p>
+            <figure class="diag-media" data-media="redesign, antes e depois"></figure>
+          </div>
+
+          <div class="diag-secao">
+            <h2>Onde o projeto parou</h2>
+            <p>A produção foi interrompida por fim de investimento, antes do lançamento. O sistema não chegou a medir a redução das seis horas em uso real. O que fica é uma solução desenhada e tecnicamente construída para esse alvo, e uma aprendizagem que levo comigo: entregar função primeiro no low-code deu-me um produto real para testar cedo, mas exigiu disciplina para refatorar a arquitetura depois, em vez de deixar as decisões técnicas iniciais congelarem a experiência.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer nav. Back opens the chat at the project list; Next case links
+           to the next case route. -->
+      <nav class="diag-nav">
+        <button type="button" data-nav-projetos data-i18n="case.voltar"></button>
+        <a href="#motorline" data-i18n="case.proximo"></a>
+      </nav>
+    </section>
+  </template>
+
+  <template data-route="contact">
+    <!-- Minimal contact page: heading, the two prominent links, and a light
+         form that opens a prefilled mailto on submit (see js/contact.js). -->
+    <section class="pagina-contacto">
+      <div class="contacto-copy">
+        <h1 class="contacto-titulo" data-i18n="contact.title"></h1>
+        <p class="contacto-intro" data-i18n="contact.intro"></p>
+      </div>
+
+      <div class="contacto-links">
+        <a class="contacto-link glass" href="mailto:jeh.nabarro@gmail.com">
+          <span class="contacto-link__rotulo" data-i18n="contact.email_label"></span>
+          <span class="contacto-link__valor">jeh.nabarro@gmail.com</span>
+        </a>
+        <!-- href is set from the LINKEDIN_URL constant in js/contact.js. -->
+        <a class="contacto-link glass" href="#contact" target="_blank" rel="noopener" data-contacto-linkedin>
+          <span class="contacto-link__rotulo" data-i18n="contact.linkedin_label"></span>
+          <span class="contacto-link__valor" data-contacto-linkedin-texto>LinkedIn</span>
+        </a>
+      </div>
+
+      <form class="contacto-form glass" novalidate>
+        <input class="contacto-input" type="text" name="nome" autocomplete="name"
+          data-i18n-placeholder="contact.form_name" />
+        <input class="contacto-input" type="email" name="email" autocomplete="email"
+          data-i18n-placeholder="contact.form_email" />
+        <textarea class="contacto-input contacto-textarea" name="mensagem" rows="4"
+          data-i18n-placeholder="contact.form_message"></textarea>
+
+        <p class="contacto-erro" data-i18n="contact.form_error" role="alert" hidden></p>
+
+        <button class="contacto-enviar" type="submit">
+          <span data-i18n="contact.form_send"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </form>
     </section>
   </template>
 

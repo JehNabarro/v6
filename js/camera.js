@@ -1,18 +1,21 @@
 /*
   camera.js
-  The "one camera": a single source of navigation state that later phases
-  (grid choreography, chat) will all read from and react to. Phase 1 sets up
-  the seam only. No visual behaviour lives here yet.
+  The "one camera": a single source of navigation state that the phases read
+  from and react to. "One camera, two modes": the home and the chat share this
+  single state, and opening the chat is a MODE change, not a new route.
 
   State shape:
-    mode:    high level view mode ('home' now; a second mode arrives later,
-             giving us "one camera, two modes").
+    mode:    high level view mode. 'home' is the resting hero; 'chat' is the
+             expanded chat panel. The hash does not change between them.
     section: the active route section ('home', 'about', ...).
+    intent:  the last intent handed to the chat (a chip id or free text), or
+             null at rest. Recorded by the home hero and by chat.js.
 */
 
 const state = {
   mode: 'home',
   section: 'home',
+  intent: null,
 };
 
 const subscribers = new Set();
