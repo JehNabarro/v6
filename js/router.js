@@ -62,6 +62,7 @@ function render() {
         window.i18n.aplicar(appEl);
       }
       sectionRenderizada = section;
+      window.scrollTo(0, 0);
     }
   }
 

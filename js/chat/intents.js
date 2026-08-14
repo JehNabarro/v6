@@ -25,16 +25,40 @@ export const chipsPadrao = ['projetos', 'sobre', 'contacto'];
                  Phase 4; for now it renders a placeholder "open case" chip)
 */
 export const intencoes = {
-  inicio:      { passos: ['chat.inicio.p1'],       chips: ['projetos', 'sobre', 'contacto'] },
-  projetos:    { passos: ['chat.projetos.p1'],     chips: ['diagnostico', 'motorline', 'momentos', 'coinple'] },
-  diagnostico: { passos: ['chat.diagnostico.p1', 'chat.diagnostico.p2', 'chat.diagnostico.p3', 'chat.diagnostico.p4'],
-                 chips: ['motorline', 'contacto'], paginaFinal: 'diagnostico' },
-  motorline:   { passos: ['chat.motorline.p1'],    chips: ['diagnostico', 'contacto'], paginaFinal: 'motorline' },
-  momentos:    { passos: ['chat.momentos.p1'],     chips: ['projetos'] },
-  coinple:     { passos: ['chat.coinple.p1'],      chips: ['projetos'] },
-  sobre:       { passos: ['chat.sobre.p1'],        chips: ['projetos', 'contacto'] },
-  contacto:    { passos: ['chat.contacto.p1'],     chips: ['projetos'] },
-  fallback:    { passos: ['chat.fallback.p1'],     chips: ['projetos', 'sobre', 'contacto'] }
+  inicio:          { passos: ['chat.inicio.p1'],       chips: ['projetos', 'sobre', 'contacto'] },
+  projetos:        { passos: ['chat.projetos.p1'],     chips: ['diagnostico', 'motorline', 'momentos', 'coinple'] },
+  diagnostico:     { passos: [
+                       { texto: 'chat.diagnostico.p1', btn: 'chat.diagnostico.btn1' },
+                       { texto: 'chat.diagnostico.p2', btn: 'chat.diagnostico.btn2' },
+                       { texto: 'chat.diagnostico.p3', btn: 'chat.diagnostico.btn3' },
+                       { texto: 'chat.diagnostico.p4' }
+                     ],
+                     chips: ['motorline', 'contacto'], paginaFinal: 'diagnostico' },
+  motorline:       { passos: [
+                       { texto: 'chat.motorline.p1', btn: 'chat.motorline.btn1', img: 'assets/img/Motorline/Producao.webp' },
+                       { texto: 'chat.motorline.p2', btn: 'chat.motorline.btn2', img: 'assets/img/Motorline/Producao2.webp' },
+                       { texto: 'chat.motorline.p3' }
+                     ],
+                     chips: ['diagnostico', 'contacto'], paginaFinal: 'motorline' },
+  momentos:        { passos: [
+                       { texto: 'chat.momentos.p1', btn: 'chat.momentos.btn1', img: 'assets/img/Momentos/tela1.webp' },
+                       { texto: 'chat.momentos.p2', btn: 'chat.momentos.btn2', img: 'assets/img/Momentos/Tela2.webp' },
+                       { texto: 'chat.momentos.p3' }
+                     ],
+                     chips: ['projetos'] },
+  coinple:         { passos: [
+                       { texto: 'chat.coinple.p1', btn: 'chat.coinple.btn1', img: 'assets/img/Coinple/Coinple-IA.webp' },
+                       { texto: 'chat.coinple.p2', btn: 'chat.coinple.btn2' },
+                       { texto: 'chat.coinple.p3' }
+                     ],
+                     chips: ['projetos'] },
+  sobre:           { passos: ['chat.sobre.p1'],        chips: ['experiencia', 'stack', 'formacao', 'projetos'] },
+  contacto:        { passos: ['chat.contacto.p1'],     chips: ['projetos'] },
+  experiencia:     { passos: ['chat.experiencia.p1', 'chat.experiencia.p2'], chips: ['stack', 'projetos', 'contacto'] },
+  stack:           { passos: ['chat.stack.p1'],        chips: ['projetos', 'contacto'] },
+  formacao:        { passos: ['chat.formacao.p1'],     chips: ['experiencia', 'projetos'] },
+  disponibilidade: { passos: ['chat.disponibilidade.p1'], chips: ['contacto', 'projetos'] },
+  fallback:        { passos: ['chat.fallback.p1'],     chips: ['projetos', 'sobre', 'contacto'] }
 };
 
 /*
@@ -48,8 +72,12 @@ export const gatilhos = [
   { regex: /diagn[oó]stic|lideran[cç]a|leadership/i, id: 'diagnostico' },
   { regex: /motor\s*line/i,                         id: 'motorline' },
   { regex: /projet|project|work|trabalh|case/i,     id: 'projetos' },
-  { regex: /sobre|about|quem|who|j[eé]ssica/i,       id: 'sobre' },
-  { regex: /contact|contacto|e-?mail|falar|linkedin|hire|contrat/i, id: 'contacto' }
+  { regex: /sobre|about|quem|who|j[eé]ssica|voc[eê]|you/i, id: 'sobre' },
+  { regex: /contact|contacto|e-?mail|falar|linkedin|message/i, id: 'contacto' },
+  { regex: /experi[eê]ncia|experience|background|hist[oó]ria|history|curr[ií]culo|cv|resume/i, id: 'experiencia' },
+  { regex: /stack|ferramenta|tools|figma|html|css|js|javascript|tecnologia/i, id: 'stack' },
+  { regex: /forma[cç][aã]o|education|estudo|study|faculdade|university|degree/i, id: 'formacao' },
+  { regex: /dispon[ií]vel|freela|contrat|hire|available|work/i, id: 'disponibilidade' }
 ];
 
 /*

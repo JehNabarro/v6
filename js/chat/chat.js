@@ -72,6 +72,7 @@ const CTX_CHAT = 'chat';
 // Intent ids that carry a chip label (chat.chip.<id>).
 const IDS_COM_ROTULO = new Set([
   'projetos', 'diagnostico', 'motorline', 'momentos', 'coinple', 'sobre', 'contacto',
+  'experiencia', 'stack', 'formacao', 'disponibilidade'
 ]);
 
 // Home quick-action aliases (their data-intent values) count as known intents.
@@ -334,14 +335,27 @@ function mostrarDigitando() {
   return d;
 }
 
-function revelarPasso(chave) {
+function revelarPasso(def) {
   const passo = document.createElement('div');
   passo.className = 'chat-passo';
+  
+  const chaveTexto = typeof def === 'string' ? def : def.texto;
   const texto = document.createElement('p');
   texto.className = 'chat-resposta';
-  texto.setAttribute('data-i18n', chave);
-  texto.textContent = t(chave);
+  texto.setAttribute('data-i18n', chaveTexto);
+  texto.textContent = t(chaveTexto);
   passo.appendChild(texto);
+
+  if (typeof def === 'object' && def.img) {
+    const fig = document.createElement('figure');
+    fig.className = 'chat-media';
+    const img = document.createElement('img');
+    img.src = def.img;
+    img.alt = '';
+    fig.appendChild(img);
+    passo.appendChild(fig);
+  }
+
   corpoEl.appendChild(passo);
   scrollFim();
   if (!reduzido()) {
@@ -349,12 +363,15 @@ function revelarPasso(chave) {
   }
 }
 
-function mostrarContinuar() {
+function mostrarContinuar(passoAtual) {
   const b = document.createElement('button');
   b.type = 'button';
   b.className = 'chat-continuar';
-  b.setAttribute('data-i18n', 'chat.continue');
-  b.textContent = t('chat.continue');
+  
+  const chaveBtn = (typeof passoAtual === 'object' && passoAtual.btn) ? passoAtual.btn : 'chat.continue';
+  
+  b.setAttribute('data-i18n', chaveBtn);
+  b.textContent = t(chaveBtn);
   corpoEl.appendChild(b);
   scrollFim();
 }
@@ -392,9 +409,10 @@ function avancar() {
   removerContinuar();
 
   const revelar = () => {
-    revelarPasso(passos[indice]);
+    const passoAtual = passos[indice];
+    revelarPasso(passoAtual);
     indice += 1;
-    if (indice < passos.length) mostrarContinuar();
+    if (indice < passos.length) mostrarContinuar(passoAtual);
     else mostrarChipsSeguintes();
   };
 

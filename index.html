@@ -32,6 +32,9 @@
   <!-- Case pages: each is a bespoke, prefixed stylesheet imported after the
        base so it can shape its own page without leaking into the others. -->
   <link rel="stylesheet" href="css/case-diagnostico.css">
+  <link rel="stylesheet" href="css/case-motorline.css">
+  <link rel="stylesheet" href="css/case-momentos.css">
+  <link rel="stylesheet" href="css/case-coinple.css">
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/contact.css">
   <link rel="stylesheet" href="css/about.css">
@@ -122,8 +125,7 @@
     <!-- Hamburger: three bars that morph to an X (see css/menu.css). The
          aria-label is managed in js/header.js so it can flip between open and
          close; aria-controls points at the drawer. -->
-    <button class="botao-menu glass precisa-js" type="button" aria-expanded="false"
-      aria-controls="drawer-menu">
+    <button class="botao-menu glass precisa-js" type="button" aria-expanded="false" aria-controls="drawer-menu">
       <span></span>
       <span></span>
       <span></span>
@@ -153,14 +155,10 @@
         <!-- Leadership Diagnostic has its own case page, so its link routes to
              #diagnostico. The remaining projects keep opening the chat
              storytelling until their own pages are built. -->
-        <li><a class="drawer-projeto" href="#diagnostico"
-            data-i18n="chat.chip.diagnostico"></a></li>
-        <li><button class="drawer-projeto" type="button" data-intent="motorline"
-            data-i18n="chat.chip.motorline"></button></li>
-        <li><button class="drawer-projeto" type="button" data-intent="momentos"
-            data-i18n="chat.chip.momentos"></button></li>
-        <li><button class="drawer-projeto" type="button" data-intent="coinple"
-            data-i18n="chat.chip.coinple"></button></li>
+        <li><a class="drawer-projeto" href="#diagnostico" data-i18n="chat.chip.diagnostico"></a></li>
+        <li><a class="drawer-projeto" href="#motorline" data-i18n="chat.chip.motorline"></a></li>
+        <li><a class="drawer-projeto" href="#momentos" data-i18n="chat.chip.momentos"></a></li>
+        <li><a class="drawer-projeto" href="#coinple" data-i18n="chat.chip.coinple"></a></li>
       </ul>
 
       <a class="drawer-link" href="#contact" data-i18n="menu.contact"></a>
@@ -197,10 +195,6 @@
            avatar inline just after the name. -->
         <div class="home-title-row">
           <h1 class="home-title" data-i18n-html="home.title"></h1>
-          <!-- The real photo goes here (assets/img/avatar.jpg). If it is absent,
-             js/home.js swaps in an empty image and the ringed circle still
-             holds with a neutral --cor-bloco fill. -->
-          <img class="home-avatar" src="assets/img/avatar.png" alt="" data-i18n-alt="home.avatar_alt" />
         </div>
 
         <!-- Subtitle with the accent "UI/UX designer" span. -->
@@ -285,12 +279,15 @@
             products. Somewhere in there, I found out what I really enjoyed: understanding problems and figuring out how
             to solve them. That's when UX made sense.</p>
           <p>For me, design isn't only about making something pretty. It's about making the complicated feel simple.</p>
-          <p>I like to understand the why before I decide the how. I question, organise, test and get my hands dirty.</p>
+          <p>I like to understand the why before I decide the how. I question, organise, test and get my hands dirty.
+          </p>
           <p>I also like technology. Understanding how things are built helps me create solutions that work outside
             Figma, and it helps me talk to the people who will bring them to life.</p>
-          <p>I don't fit neatly into one box. I like strategy, but I like the details too. I like a good interface, above
+          <p>I don't fit neatly into one box. I like strategy, but I like the details too. I like a good interface,
+            above
             all when it doesn't need to shout to work.</p>
-          <p>In the end, it's simple: understand the complicated, keep what matters and build something that makes sense.
+          <p>In the end, it's simple: understand the complicated, keep what matters and build something that makes
+            sense.
             And when it works, people don't notice the effort behind it. They just use it.</p>
         </div>
 
@@ -319,43 +316,134 @@
 
   <template data-route="projects">
     <!--
-      Projects page (css/projects.css). A heading, a short intro, then the four
-      cases as a stacked list. Each row keeps the accent line in front (the same
-      cue the menu uses) and carries the same visual weight; clicking a row opens
-      the chat storytelling for that case via js/home.js (data-intent).
+      Projects page (css/projects.css).
+      Each project is a card with a CSS device mockup (mobile, desktop or tablet).
+      Order: Momentos (hero), Diagnóstico (desktop), Motorline (desktop),
+      then a Study divider followed by Coinple (personal project, mobile pair).
+      Copy always comes first in the HTML for screen-reader and mobile order;
+      the CSS grid re-orders the mockup column to the left on ≥ 768 px where needed.
     -->
     <section class="pagina-projetos">
-      <div class="projetos-copy">
+
+      <header class="projetos-header">
+        <p class="projetos-eyebrow">Work</p>
         <h1 class="projetos-titulo" data-i18n="projects.title"></h1>
         <p class="projetos-intro" data-i18n="projects.intro"></p>
-      </div>
+      </header>
 
-      <ul class="projetos-lista">
-        <li>
-          <button class="projeto-item" type="button" data-intent="diagnostico">
-            <span class="projeto-item__nome" data-i18n="chat.chip.diagnostico"></span>
-            <span class="projeto-item__desc" data-i18n="projects.diagnostico_desc"></span>
-          </button>
-        </li>
-        <li>
-          <button class="projeto-item" type="button" data-intent="motorline">
-            <span class="projeto-item__nome" data-i18n="chat.chip.motorline"></span>
-            <span class="projeto-item__desc" data-i18n="projects.motorline_desc"></span>
-          </button>
-        </li>
-        <li>
-          <button class="projeto-item" type="button" data-intent="momentos">
-            <span class="projeto-item__nome" data-i18n="chat.chip.momentos"></span>
-            <span class="projeto-item__desc" data-i18n="projects.momentos_desc"></span>
-          </button>
-        </li>
-        <li>
-          <button class="projeto-item" type="button" data-intent="coinple">
-            <span class="projeto-item__nome" data-i18n="chat.chip.coinple"></span>
-            <span class="projeto-item__desc" data-i18n="projects.coinple_desc"></span>
-          </button>
-        </li>
-      </ul>
+      <div class="projetos-grade">
+
+        <!-- ① Momentos: hero card — mobile app, tablet + phone stacked from bottom -->
+        <article class="projeto-card projeto-card--destaque">
+          <div class="projeto-card__copy">
+            <span class="projeto-tag projeto-tag--destaque" data-i18n="projects.tag_destaque">Featured</span>
+            <h2 class="projeto-card__nome">Momentos</h2>
+            <p class="projeto-card__desc" data-i18n="projects.momentos_desc"></p>
+            <a class="projeto-card__cta" href="#momentos" data-i18n="projects.ver_caso">Open case</a>
+          </div>
+          <div class="projeto-card__mockup">
+            <div class="mockup-momentos">
+              <!-- Tablet: back-left, larger device -->
+              <div class="mockup-tablet">
+                <div class="mockup-tablet__frame">
+                  <div class="mockup-tablet__screen">
+                    <img src="assets/img/Momentos/Tela2.webp" alt="Momentos workspace" loading="lazy" />
+                  </div>
+                </div>
+              </div>
+              <!-- Phone: front-right, elevated for depth -->
+              <div class="mockup-mobile">
+                <div class="mockup-mobile__frame">
+                  <div class="mockup-mobile__screen">
+                    <img src="assets/img/momentos-mockup-inside.webp" alt="Momentos app" loading="lazy" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ② Diagnóstico de Liderança: desktop browser only (user request) -->
+        <article class="projeto-card projeto-card--mockup-esq">
+          <div class="projeto-card__copy">
+            <span class="projeto-tag">Product design</span>
+            <h2 class="projeto-card__nome" data-i18n="chat.chip.diagnostico">Leadership Diagnostic</h2>
+            <p class="projeto-card__desc" data-i18n="projects.diagnostico_desc"></p>
+            <a class="projeto-card__cta" href="#diagnostico" data-i18n="projects.ver_caso">Open case</a>
+          </div>
+          <div class="projeto-card__mockup">
+            <div class="mockup-desktop">
+              <div class="mockup-desktop__chrome">
+                <span class="mockup-desktop__dot"></span>
+                <span class="mockup-desktop__dot"></span>
+                <span class="mockup-desktop__dot"></span>
+                <div class="mockup-desktop__url"></div>
+              </div>
+              <div class="mockup-desktop__screen">
+                <img src="assets/img/diagnostico-mockup-inside.webp" alt="Leadership Diagnostic interface"
+                  loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ③ Motorline: desktop browser -->
+        <article class="projeto-card">
+          <div class="projeto-card__copy">
+            <span class="projeto-tag">UX/UI · Front-end</span>
+            <h2 class="projeto-card__nome">Motorline</h2>
+            <p class="projeto-card__desc" data-i18n="projects.motorline_desc"></p>
+            <a class="projeto-card__cta" href="#motorline" data-i18n="projects.ver_caso">Open case</a>
+          </div>
+          <div class="projeto-card__mockup">
+            <div class="mockup-desktop">
+              <div class="mockup-desktop__chrome">
+                <span class="mockup-desktop__dot"></span>
+                <span class="mockup-desktop__dot"></span>
+                <span class="mockup-desktop__dot"></span>
+                <div class="mockup-desktop__url"></div>
+              </div>
+              <div class="mockup-desktop__screen">
+                <img src="assets/img/Motorline/Producao3.webp" alt="Motorline production interface" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Divider: study section -->
+        <div class="projetos-divisor" aria-hidden="true">
+          <span class="projetos-divisor__label" data-i18n="projects.divisor_estudo">Study</span>
+        </div>
+
+        <!-- ④ Coinple: personal project, two mobile phones -->
+        <article class="projeto-card projeto-card--estudo projeto-card--mockup-esq">
+          <div class="projeto-card__copy">
+            <span class="projeto-tag" data-i18n="projects.tag_estudo">Personal project</span>
+            <h2 class="projeto-card__nome">Coinple</h2>
+            <p class="projeto-card__desc" data-i18n="projects.coinple_desc"></p>
+            <a class="projeto-card__cta" href="#coinple" data-i18n="projects.ver_caso">Open case</a>
+          </div>
+          <div class="projeto-card__mockup mockup-coinple">
+            <!-- Main phone: redesign -->
+            <div class="mockup-mobile">
+              <div class="mockup-mobile__frame">
+                <div class="mockup-mobile__screen">
+                  <img src="assets/img/coinple-mockup-inside.webp" alt="Coinple app" loading="lazy" />
+                </div>
+              </div>
+            </div>
+            <!-- Second phone: depth / ghost -->
+            <div class="mockup-mobile">
+              <div class="mockup-mobile__frame">
+                <div class="mockup-mobile__screen">
+                  <img src="assets/img/coinple-mockup-inside.webp" alt="Coinple app alternate view" loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /.projetos-grade -->
     </section>
   </template>
 
@@ -374,20 +462,27 @@
         <div data-lang="en">
           <header class="diag-hero">
             <h1 class="diag-titulo">Leadership Diagnostic</h1>
-            <p class="diag-solucao">Consultants spent an average of six hours writing a single report. The system was designed to attack that number from two sides: bring every participant document into one place, a search away, and put an AI in the flow that flags inconsistencies while the consultant writes.</p>
+            <p class="diag-solucao">Consultants spent an average of six hours writing a single report. The system was
+              designed to attack that number from two sides: bring every participant document into one place, a search
+              away, and put an AI in the flow that flags inconsistencies while the consultant writes.</p>
             <p class="diag-nota">(fictitious name under a confidentiality agreement)</p>
           </header>
 
           <div class="diag-secao">
             <h2>What the system solved</h2>
-            <p>The bottleneck was not the writing, it was the gathering. The consultant lost hours hunting for scattered documents before even starting the report, then reviewing by hand for contradictions. The system centralised clients, participants, consultants and projects into a single manager, made every document available at once, and handed the consistency check to an AI. The consultant goes back to doing the one thing only they can do: analyse.</p>
+            <p>The bottleneck was not the writing, it was the gathering. The consultant lost hours hunting for scattered
+              documents before even starting the report, then reviewing by hand for contradictions. The system
+              centralised clients, participants, consultants and projects into a single manager, made every document
+              available at once, and handed the consistency check to an AI. The consultant goes back to doing the one
+              thing only they can do: analyse.</p>
           </div>
 
           <div class="diag-secao">
             <h2>Context</h2>
             <ul class="diag-contexto">
               <li>Sector: leadership diagnostics consulting.</li>
-              <li>My role: [fill in, for example UX/UI and low-code development, from the site map to the redesign].</li>
+              <li>My role: [fill in, for example UX/UI and low-code development, from the site map to the redesign].
+              </li>
               <li>Format: [solo or team, and timeframe].</li>
               <li>Stack: low-code, Figma, data modelling, AI integration.</li>
             </ul>
@@ -398,45 +493,65 @@
             <div class="diag-perfis-grade">
               <article class="diag-perfil glass">
                 <h3>Consultants</h3>
-                <p>Consultants wrote the reports and carried the six hours. They needed the context gathered and less rework in review.</p>
+                <p>Consultants wrote the reports and carried the six hours. They needed the context gathered and less
+                  rework in review.</p>
               </article>
               <article class="diag-perfil glass">
                 <h3>Administrators</h3>
-                <p>Administrators managed clients, participants, consultants and projects. They needed to find any record fast, without walking through several screens.</p>
+                <p>Administrators managed clients, participants, consultants and projects. They needed to find any
+                  record fast, without walking through several screens.</p>
               </article>
             </div>
           </div>
 
           <div class="diag-secao">
             <h2>The constraint: build before design</h2>
-            <p>Development started before there was a layout. I modelled the data and structured the application straight in low-code, function first. The first prototype was deliberately raw in its visuals, focused only on proving the flow closed. Only once it was running did I apply usability tests and reverse engineer the experience.</p>
+            <p>Development started before there was a layout. I modelled the data and structured the application
+              straight in low-code, function first. The first prototype was deliberately raw in its visuals, focused
+              only on proving the flow closed. Only once it was running did I apply usability tests and reverse engineer
+              the experience.</p>
           </div>
 
           <div class="diag-secao diag-secao--viragem">
             <h2>The architecture shift</h2>
-            <p>The most expensive problem was not visual, it was flow. To complete a registration, the user entered and exited at every step: answered, went back, entered again. I rebuilt the information architecture so that, once the cycle began, every step followed in sequence without leaving the screen. The site map, vertical before, became horizontal, mirroring that continuous flow.</p>
+            <p>The most expensive problem was not visual, it was flow. To complete a registration, the user entered and
+              exited at every step: answered, went back, entered again. I rebuilt the information architecture so that,
+              once the cycle began, every step followed in sequence without leaving the screen. The site map, vertical
+              before, became horizontal, mirroring that continuous flow.</p>
             <figure class="diag-media" data-media="vertical to horizontal site map, before and after"></figure>
           </div>
 
           <div class="diag-secao">
             <h2>Data modelling</h2>
-            <p>I documented the structure behind the application: how clients, participants, consultants, projects and documents relate. That base is what made any record reachable fast and held the report flow together from end to end.</p>
+            <p>I documented the structure behind the application: how clients, participants, consultants, projects and
+              documents relate. That base is what made any record reachable fast and held the report flow together from
+              end to end.</p>
           </div>
 
           <div class="diag-secao">
             <h2>The AI in the flow</h2>
-            <p>The differentiator that hit the six hours directly. While the consultant writes the report, the AI reviews and points out inconsistencies in the text. The consistency check, once manual and slow, moved into the writing itself rather than after it.</p>
+            <p>The differentiator that hit the six hours directly. While the consultant writes the report, the AI
+              reviews and points out inconsistencies in the text. The consistency check, once manual and slow, moved
+              into the writing itself rather than after it.</p>
           </div>
 
           <div class="diag-secao">
             <h2>Redesign</h2>
-            <p>The redesign came from a decision about context, not taste: administrators spend the whole day on the screen. I removed the white background to cut visual fatigue in prolonged use, and used grey at the top to separate the main action area and lift the brand. I standardised icons, colours, borders and buttons for predictability. I brought recent information and projects to the home, so a search for any client or company started already resolved. The breadcrumb sat above the page name, making the path taken clear.</p>
+            <p>The redesign came from a decision about context, not taste: administrators spend the whole day on the
+              screen. I removed the white background to cut visual fatigue in prolonged use, and used grey at the top to
+              separate the main action area and lift the brand. I standardised icons, colours, borders and buttons for
+              predictability. I brought recent information and projects to the home, so a search for any client or
+              company started already resolved. The breadcrumb sat above the page name, making the path taken clear.</p>
             <figure class="diag-media" data-media="redesign, before and after"></figure>
           </div>
 
           <div class="diag-secao">
             <h2>Where the project stopped</h2>
-            <p>Production was halted by the end of investment, before launch. The system never measured the six hour reduction in real use. What remains is a solution designed and technically built for that target, and a lesson I carry with me: shipping function first in low-code gave me a real product to test early, but it demanded the discipline to refactor the architecture later, rather than letting the initial technical decisions freeze the experience.</p>
+            <p>Production was halted by the end of investment, before launch. The system never measured the six hour
+              reduction in real use. What remains is a solution designed and technically built for that target, and a
+              lesson I carry with me: shipping function first in low-code gave me a real product to test early, but it
+              demanded the discipline to refactor the architecture later, rather than letting the initial technical
+              decisions freeze the experience.</p>
           </div>
         </div>
 
@@ -444,20 +559,28 @@
         <div data-lang="pt" hidden>
           <header class="diag-hero">
             <h1 class="diag-titulo">Diagnóstico de Liderança</h1>
-            <p class="diag-solucao">Os consultores gastavam, em média, seis horas para redigir um único relatório. O sistema foi desenhado para atacar esse número por dois lados: reunir todos os documentos do participante num só lugar, a uma pesquisa de distância, e colocar uma IA no fluxo que aponta incongruências enquanto o consultor escreve.</p>
+            <p class="diag-solucao">Os consultores gastavam, em média, seis horas para redigir um único relatório. O
+              sistema foi desenhado para atacar esse número por dois lados: reunir todos os documentos do participante
+              num só lugar, a uma pesquisa de distância, e colocar uma IA no fluxo que aponta incongruências enquanto o
+              consultor escreve.</p>
             <p class="diag-nota">(nome fictício por acordo de confidencialidade)</p>
           </header>
 
           <div class="diag-secao">
             <h2>O que o sistema resolvia</h2>
-            <p>O estrangulamento não era escrever, era juntar. O consultor perdia horas à procura de documentos espalhados antes mesmo de começar o relatório, e depois a rever à mão à procura de contradições. O sistema centralizou clientes, participantes, consultores e projetos num único gestor, deixou cada documento acessível na hora, e delegou a verificação de incongruências a uma IA. O consultor volta a fazer o que só ele faz: analisar.</p>
+            <p>O estrangulamento não era escrever, era juntar. O consultor perdia horas à procura de documentos
+              espalhados antes mesmo de começar o relatório, e depois a rever à mão à procura de contradições. O sistema
+              centralizou clientes, participantes, consultores e projetos num único gestor, deixou cada documento
+              acessível na hora, e delegou a verificação de incongruências a uma IA. O consultor volta a fazer o que só
+              ele faz: analisar.</p>
           </div>
 
           <div class="diag-secao">
             <h2>Contexto</h2>
             <ul class="diag-contexto">
               <li>Setor: consultoria de diagnóstico de liderança.</li>
-              <li>O meu papel: [preencher, por exemplo UX/UI e desenvolvimento low-code, do mapa do site ao redesign].</li>
+              <li>O meu papel: [preencher, por exemplo UX/UI e desenvolvimento low-code, do mapa do site ao redesign].
+              </li>
               <li>Formato: [solo ou equipa, e período].</li>
               <li>Stack: low-code, Figma, modelação de dados, integração de IA.</li>
             </ul>
@@ -468,45 +591,66 @@
             <div class="diag-perfis-grade">
               <article class="diag-perfil glass">
                 <h3>Consultores</h3>
-                <p>Os consultores escreviam os relatórios e carregavam as seis horas. Precisavam do contexto reunido e de menos retrabalho de revisão.</p>
+                <p>Os consultores escreviam os relatórios e carregavam as seis horas. Precisavam do contexto reunido e
+                  de menos retrabalho de revisão.</p>
               </article>
               <article class="diag-perfil glass">
                 <h3>Administradores</h3>
-                <p>Os administradores geriam clientes, participantes, consultores e projetos. Precisavam de encontrar qualquer registo depressa, sem navegar por vários ecrãs.</p>
+                <p>Os administradores geriam clientes, participantes, consultores e projetos. Precisavam de encontrar
+                  qualquer registo depressa, sem navegar por vários ecrãs.</p>
               </article>
             </div>
           </div>
 
           <div class="diag-secao">
             <h2>A restrição: construir antes de desenhar</h2>
-            <p>O desenvolvimento começou antes de existir layout. Modelei os dados e estruturei a aplicação diretamente no low-code, função primeiro. O primeiro protótipo era propositadamente cru no visual, focado só em provar que o fluxo fechava. Só depois de a correr é que apliquei testes de usabilidade e fiz a engenharia inversa da experiência.</p>
+            <p>O desenvolvimento começou antes de existir layout. Modelei os dados e estruturei a aplicação diretamente
+              no low-code, função primeiro. O primeiro protótipo era propositadamente cru no visual, focado só em provar
+              que o fluxo fechava. Só depois de a correr é que apliquei testes de usabilidade e fiz a engenharia inversa
+              da experiência.</p>
           </div>
 
           <div class="diag-secao diag-secao--viragem">
             <h2>A viragem de arquitetura</h2>
-            <p>O problema mais caro não era visual, era de fluxo. Para completar um registo, o utilizador entrava e saía a cada etapa: respondia, voltava, entrava de novo. Refiz a arquitetura de informação para que, uma vez iniciado o ciclo, todas as etapas seguissem em sequência, sem sair do ecrã. O mapa do site, antes vertical, passou a horizontal, refletindo esse fluxo contínuo.</p>
+            <p>O problema mais caro não era visual, era de fluxo. Para completar um registo, o utilizador entrava e saía
+              a cada etapa: respondia, voltava, entrava de novo. Refiz a arquitetura de informação para que, uma vez
+              iniciado o ciclo, todas as etapas seguissem em sequência, sem sair do ecrã. O mapa do site, antes
+              vertical, passou a horizontal, refletindo esse fluxo contínuo.</p>
             <figure class="diag-media" data-media="mapa do site vertical para horizontal, antes e depois"></figure>
           </div>
 
           <div class="diag-secao">
             <h2>Modelação de dados</h2>
-            <p>Documentei a estrutura por trás da aplicação: como clientes, participantes, consultores, projetos e documentos se relacionam. Foi essa base que permitiu o acesso rápido a qualquer registo e sustentou o fluxo de relatório de ponta a ponta.</p>
+            <p>Documentei a estrutura por trás da aplicação: como clientes, participantes, consultores, projetos e
+              documentos se relacionam. Foi essa base que permitiu o acesso rápido a qualquer registo e sustentou o
+              fluxo de relatório de ponta a ponta.</p>
           </div>
 
           <div class="diag-secao">
             <h2>A IA no fluxo</h2>
-            <p>O diferencial que atacava diretamente as seis horas. Enquanto o consultor escreve o relatório, a IA revê e aponta incongruências no texto. A verificação de consistência, antes manual e demorada, passou a acontecer durante a escrita, não depois dela.</p>
+            <p>O diferencial que atacava diretamente as seis horas. Enquanto o consultor escreve o relatório, a IA revê
+              e aponta incongruências no texto. A verificação de consistência, antes manual e demorada, passou a
+              acontecer durante a escrita, não depois dela.</p>
           </div>
 
           <div class="diag-secao">
             <h2>Redesign</h2>
-            <p>O redesenho partiu de uma decisão de contexto, não de gosto: os administradores passam o dia inteiro no ecrã. Retirei o fundo branco para reduzir o cansaço visual em uso prolongado, e usei o cinzento no topo para separar a área de ação principal e destacar a marca. Padronizei ícones, cores, bordas e botões para dar previsibilidade. Trouxe informação e projetos recentes para a página inicial, de modo que a pesquisa por qualquer cliente ou empresa começasse já resolvida. O caminho de navegação ficou acima do nome da página, deixando claro o caminho percorrido.</p>
+            <p>O redesenho partiu de uma decisão de contexto, não de gosto: os administradores passam o dia inteiro no
+              ecrã. Retirei o fundo branco para reduzir o cansaço visual em uso prolongado, e usei o cinzento no topo
+              para separar a área de ação principal e destacar a marca. Padronizei ícones, cores, bordas e botões para
+              dar previsibilidade. Trouxe informação e projetos recentes para a página inicial, de modo que a pesquisa
+              por qualquer cliente ou empresa começasse já resolvida. O caminho de navegação ficou acima do nome da
+              página, deixando claro o caminho percorrido.</p>
             <figure class="diag-media" data-media="redesign, antes e depois"></figure>
           </div>
 
           <div class="diag-secao">
             <h2>Onde o projeto parou</h2>
-            <p>A produção foi interrompida por fim de investimento, antes do lançamento. O sistema não chegou a medir a redução das seis horas em uso real. O que fica é uma solução desenhada e tecnicamente construída para esse alvo, e uma aprendizagem que levo comigo: entregar função primeiro no low-code deu-me um produto real para testar cedo, mas exigiu disciplina para refatorar a arquitetura depois, em vez de deixar as decisões técnicas iniciais congelarem a experiência.</p>
+            <p>A produção foi interrompida por fim de investimento, antes do lançamento. O sistema não chegou a medir a
+              redução das seis horas em uso real. O que fica é uma solução desenhada e tecnicamente construída para esse
+              alvo, e uma aprendizagem que levo comigo: entregar função primeiro no low-code deu-me um produto real para
+              testar cedo, mas exigiu disciplina para refatorar a arquitetura depois, em vez de deixar as decisões
+              técnicas iniciais congelarem a experiência.</p>
           </div>
         </div>
       </div>
@@ -519,6 +663,401 @@
       </nav>
     </section>
   </template>
+
+  <template data-route="motorline">
+    <section class="pagina-diagnostico pagina-motorline">
+      <div class="diag-corpo">
+        <div data-lang="en">
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Motorline</h1>
+            <p class="diag-solucao">A production spreadsheet with many columns and constant horizontal scrolling became
+              an interface that shows only the essentials and explains each data point with a click. The redesign
+              brought together what the spreadsheet scattered: the missing part in stock and the production of that same
+              part on the responsible machine.</p>
+          </header>
+          <div class="diag-secao">
+            <h2>What the system solved</h2>
+            <p>The pain wasn't lack of data, it was poorly organized excess. Important information was lost amidst
+              secondary information, column acronyms were confusing and there was no explanation for what each meant.
+              The redesign transformed the control into a hierarchical table, which reveals information on demand and
+              keeps visible only what is indispensable for the decision. What previously didn't fit on one screen now
+              adapts to various formats.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Context</h2>
+            <ul class="diag-contexto">
+              <li>Sector: production and stock control.</li>
+              <li>My role: UX/UI and front-end, from wireframe to the beginning of the table implementation.</li>
+              <li>Format: Team, 3 months.</li>
+              <li>Stack: Figma, HTML, CSS, JavaScript, design system.</li>
+            </ul>
+          </div>
+          <div class="diag-secao diag-perfis">
+            <h2>Users</h2>
+            <div class="diag-perfis-grade">
+              <article class="diag-perfil glass">
+                <h3>Managers</h3>
+                <p>Those who manage daily production. They needed to cross-reference the missing part in stock with the
+                  production of that part on the responsible machine, without having to memorize acronyms or hunt for
+                  information in a spreadsheet that scrolled sideways.</p>
+              </article>
+            </div>
+          </div>
+          <div class="diag-secao">
+            <h2>The starting point</h2>
+            <p>The origin was a spreadsheet with many columns and constant horizontal scrolling. One of the central
+              pains was precisely crossing the missing part in stock with the production of that same part on the
+              responsible machine, something the spreadsheet pushed apart instead of bringing together.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/Producao.webp" alt="Original spreadsheet" />
+            </figure>
+          </div>
+          <div class="diag-secao">
+            <h2>Design decisions</h2>
+            <p>Three decisions guided the layout. First: hide and show information according to the manager's need,
+              leaving on screen only the indispensable. Second: give each column an accessible explanation with a click.
+              Third: establish a clear visual hierarchy, separating the urgent from the secondary.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/Producao2.webp" alt="Redesigned table" /></figure>
+          </div>
+          <div class="diag-secao">
+            <h2>Design System</h2>
+            <p>The design system was built on Atomic Design, Brad Frost's methodology. The atoms define colors, icons,
+              and typography. Combined, they form molecules like buttons. Molecules group into organisms, such as
+              compound buttons and filters. These blocks rise to templates, like the table itself. Consistency comes
+              from this base.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/DS.webp" alt="Design System" /></figure>
+          </div>
+          <div class="diag-secao">
+            <h2>Solution and Where it stopped</h2>
+            <p>With the design system applied, the hierarchy of information became legible: you can understand the
+              table, perceive its urgencies, and feel more confident when making a decision. What previously required
+              horizontal scrolling and acronym memory now fits, prioritized, on the screen. I acted in end-to-end
+              design, from wireframe to final layout, with prototyping and validation in user tests. I started the
+              table's front-end implementation before leaving the project.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/Producao3.webp" alt="Responsive table" /></figure>
+          </div>
+        </div>
+
+        <div data-lang="pt" hidden>
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Motorline</h1>
+            <p class="diag-solucao">Uma planilha de produção com muitas colunas e rolagem horizontal constante virou uma
+              interface que mostra só o essencial e explica cada dado com um clique. O redesenho aproximou o que a
+              planilha espalhava: a peça em falta no estoque e a produção dessa mesma peça na máquina responsável.</p>
+          </header>
+          <div class="diag-secao">
+            <h2>O que o sistema resolvia</h2>
+            <p>A dor não era falta de dados, era excesso mal organizado. Informação importante se perdia no meio de
+              informação secundária, as siglas das colunas se confundiam e não havia explicação para o que cada uma
+              significava. O redesenho transformou o controle numa tabela hierarquizada, que revela informação sob
+              demanda e mantém visível apenas o indispensável para a decisão. O que antes não cabia em uma tela passou a
+              se adaptar a vários formatos.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Contexto</h2>
+            <ul class="diag-contexto">
+              <li>Setor: controle de produção e estoque.</li>
+              <li>Meu papel: UX/UI e front-end, do wireframe ao início da implementação da tabela.</li>
+              <li>Formato: Equipa, 3 meses.</li>
+              <li>Stack: Figma, HTML, CSS, JavaScript, design system.</li>
+            </ul>
+          </div>
+          <div class="diag-secao diag-perfis">
+            <h2>Usuários</h2>
+            <div class="diag-perfis-grade">
+              <article class="diag-perfil glass">
+                <h3>Administradores</h3>
+                <p>Quem administra a produção no dia a dia. Precisava cruzar, na mesma leitura, a peça em falta no
+                  estoque com a produção dessa peça na máquina responsável, sem depender de decorar siglas nem caçar a
+                  informação numa planilha que rolava para os lados.</p>
+              </article>
+            </div>
+          </div>
+          <div class="diag-secao">
+            <h2>O ponto de partida</h2>
+            <p>A origem era uma planilha com muitas colunas e rolagem horizontal constante. Uma das dores centrais era
+              justamente cruzar a peça em falta no estoque com a produção dessa mesma peça na máquina responsável, algo
+              que a planilha afastava em vez de aproximar. Somava-se a isso o excesso de informação no meio dos dados
+              que realmente importavam e a ausência de explicação em cada coluna.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/Producao.webp" alt="Planilha original" /></figure>
+          </div>
+          <div class="diag-secao">
+            <h2>Decisões de design</h2>
+            <p>Três decisões guiaram o layout. A primeira foi esconder e mostrar informação conforme a necessidade de
+              quem administra, deixando em tela só o indispensável. A segunda foi dar a cada coluna uma explicação
+              acessível com um clique. A terceira foi estabelecer uma hierarquia visual clara, separando o urgente do
+              secundário.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/Producao2.webp" alt="Tabela redesenhada" />
+            </figure>
+          </div>
+          <div class="diag-secao">
+            <h2>Design System</h2>
+            <p>O sistema de design foi construído sobre o Atomic Design, metodologia de Brad Frost. Os átomos, menores
+              unidades, definem cores, ícones e tipografia. Combinados, formam moléculas como os botões. As moléculas se
+              agrupam em organismos, caso dos botões compostos e dos filtros. Esses blocos sobem para templates, como a
+              própria tabela, e chegam às páginas, como esta. A consistência do resultado vem dessa base.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/DS.webp" alt="Design System" /></figure>
+          </div>
+          <div class="diag-secao">
+            <h2>Solução e Onde Parou</h2>
+            <p>Com o design system aplicado, a hierarquia das informações ficou legível: dá para entender a tabela,
+              perceber suas urgências e sentir mais confiança ao tomar uma decisão. O que antes exigia rolagem
+              horizontal e memória de siglas passou a caber, priorizado, na tela. Atuei no design de ponta a ponta, do
+              wireframe ao layout final, com prototipação e validação em testes com usuários. Iniciei a implementação do
+              front-end da tabela antes de deixar o projeto.</p>
+            <figure class="diag-media"><img src="assets/img/Motorline/Producao3.webp" alt="Tabela responsiva" />
+            </figure>
+          </div>
+        </div>
+      </div>
+      <nav class="diag-nav">
+        <button type="button" data-nav-projetos data-i18n="case.voltar"></button>
+        <a href="#momentos" data-i18n="case.proximo"></a>
+      </nav>
+    </section>
+  </template>
+
+
+  <template data-route="momentos">
+    <section class="pagina-diagnostico pagina-momentos">
+      <div class="diag-corpo">
+        <div data-lang="en">
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Momentos</h1>
+            <p class="diag-solucao">Momentos connects photographers to those who want to be photographed and solves the
+              part that almost always gets stuck: delivery. The photo is captured in seconds, but organizing,
+              delivering, and selling can take hours. Momentos shortens this distance. The client receives the images
+              instantly, and the photographer sells without dragged-out negotiations.</p>
+            <p class="diag-nota">UX/UI Design. Concept, study, layout and identity. Figma. Project started by me and
+              designed with the product owner and a senior developer.</p>
+          </header>
+          <div class="diag-secao">
+            <h2>The problem</h2>
+            <p>I started the project from a simple question: why is selling a photo so much slower than taking it? The
+              study confirmed a common pattern among photographers. Capture is fast and rewarding. The rest is slow and
+              manual: files scattered across cards and clouds, images exported and sent one by one, and the sale
+              dragging on while the emotion of the moment cools down. Many lose clients just by taking too long.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Finding</h2>
+            <p>The home is a map because Momentos depends on two pieces of data: place and time. Photographer and client
+              need to cross paths in the same place, at the same time, and a map shows this at a glance. The time
+              selector on the right filters by time and brings instantaneity to the center of navigation.</p>
+            <figure class="diag-media"><img src="assets/img/Momentos/tela1.webp" alt="Momentos Map" /></figure>
+            <p>A map has a risk: it looks like Google Maps or Uber, and the app can lose its identity in an instant.
+              That's what the colored bar at the bottom is for. It's not an ornament. It's the constant element that
+              tells the user they are in Momentos.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Delivering</h2>
+            <p>If home is finding, the workspace is delivering, and this is where the main pain is solved. Instead of
+              exporting and sending photo by photo, the photographer generates a QR Code and the person receives the
+              images instantly. Numbering and status keep each delivery organized, and tags save the time previously
+              lost sorting photos.</p>
+            <figure class="diag-media"><img src="assets/img/Momentos/Tela2.webp" alt="Momentos Workspace" /></figure>
+          </div>
+          <div class="diag-secao">
+            <h2>The color that became identity</h2>
+            <p>The colored bar was born from the hardest decision of the project: the base color. The product owner had
+              his own taste and frequently changed the scope. My job was to reconcile that preference with a clear
+              criterion: color had to have a function and not just be aesthetic. From that conversation came a colored
+              footer derived from the logo, which became the application's signature and the thread that keeps it
+              recognizable on any screen.</p>
+            <figure class="diag-media"><img src="assets/img/Momentos/TelasMobile.webp" alt="Momentos Mobile Screens" />
+            </figure>
+          </div>
+          <div class="diag-secao">
+            <h2>The website</h2>
+            <p>With the application designed on both fronts, the one who photographs and the one who is photographed, I
+              also designed the website that attracts photographers to the platform. Today, already with alterations, it
+              is live at momentos.art.</p>
+          </div>
+        </div>
+
+        <div data-lang="pt" hidden>
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Momentos</h1>
+            <p class="diag-solucao">Momentos liga fotógrafos a quem quer ser fotografado e resolve a parte que quase
+              sempre trava: a entrega. A foto é capturada em segundos, mas organizar, entregar e vender pode levar
+              horas. Momentos encurta essa distância. O cliente recebe as imagens na hora e o fotógrafo vende sem
+              negociação arrastada.</p>
+            <p class="diag-nota">UX/UI Design. Conceito, estudo, layout e identidade. Figma. Projeto iniciado por mim e
+              desenhado com o dono do produto e um desenvolvedor sénior.</p>
+          </header>
+          <div class="diag-secao">
+            <h2>O problema</h2>
+            <p>Iniciei o projeto a partir de uma pergunta simples: porque é que vender uma foto é tão mais lento do que
+              tirá-la? O estudo confirmou um padrão comum a fotógrafos em qualquer fase da carreira. A captura é rápida
+              e gratificante. O resto é lento e manual: ficheiros espalhados por cartões e nuvens, imagens exportadas e
+              enviadas uma a uma, e a venda a arrastar-se enquanto a emoção do momento esfria. Muitos perdem clientes só
+              por demorar. Cada ecrã que desenhei responde a um ponto desta dor.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Encontrar</h2>
+            <p>A home é um mapa porque o Momentos depende de dois dados, lugar e hora. Fotógrafo e cliente precisam de
+              se cruzar no mesmo sítio, no mesmo momento, e um mapa mostra isso de relance. O seletor de tempo à direita
+              filtra por hora e traz a instantaneidade para o centro da navegação.</p>
+            <figure class="diag-media"><img src="assets/img/Momentos/tela1.webp" alt="Momentos Mapa" /></figure>
+            <p>Um mapa tem um risco: parece-se com o Google Maps ou o Uber, e a app pode perder identidade nesse
+              instante. Foi para isso que serve a barra colorida em baixo. Não é enfeite. É o elemento constante que diz
+              ao utilizador que está no Momentos.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Entregar</h2>
+            <p>Se a home é encontrar, a área de trabalho é entregar, e é aqui que se resolve a dor principal. Em vez de
+              exportar e enviar foto a foto, o fotógrafo gera um QR Code e a pessoa recebe as imagens na hora. A
+              numeração e o status mantêm cada entrega organizada, e as etiquetas poupam o tempo que antes se perdia a
+              separar fotos.</p>
+            <figure class="diag-media"><img src="assets/img/Momentos/Tela2.webp" alt="Momentos Área de Trabalho" />
+            </figure>
+          </div>
+          <div class="diag-secao">
+            <h2>A cor que virou identidade</h2>
+            <p>A barra colorida nasceu da decisão mais difícil do projeto: a cor base. O dono do produto tinha um gosto
+              próprio e mudava o âmbito com frequência. O meu trabalho foi conciliar essa preferência com um critério
+              claro, a cor tinha de ter função e não ser só estética. Dessa conversa saiu um rodapé colorido derivado do
+              logótipo, que se tornou a assinatura da aplicação e o fio que a mantém reconhecível em qualquer ecrã.</p>
+            <figure class="diag-media"><img src="assets/img/Momentos/TelasMobile.webp" alt="Momentos Ecrãs Mobile" />
+            </figure>
+          </div>
+          <div class="diag-secao">
+            <h2>O site</h2>
+            <p>Com a aplicação desenhada nas duas frentes, a de quem fotografa e a de quem é fotografado, desenhei
+              também o site que atrai fotógrafos para a plataforma. Hoje, já com alterações, está no ar em momentos.art.
+            </p>
+          </div>
+        </div>
+      </div>
+      <nav class="diag-nav">
+        <button type="button" data-nav-projetos data-i18n="case.voltar"></button>
+        <a href="#coinple" data-i18n="case.proximo"></a>
+      </nav>
+    </section>
+  </template>
+
+
+  <template data-route="coinple">
+    <section class="pagina-diagnostico pagina-coinple">
+      <div class="diag-corpo">
+        <div data-lang="en">
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Coinple</h1>
+            <p class="diag-solucao">Coinple is a budget app for shared finances, designed to do the opposite of most:
+              instead of opening with what's already gone, it opens with what's still left. Money split between two
+              people is usually a source of tension, almost always due to a lack of visibility. Coinple's answer is
+              tranquility: the categories that weigh the most in the month are big and upfront, what's available comes
+              first, and the person decides what gets highlighted.</p>
+            <p class="diag-nota">(personal project, in continuous development. Brand, design and code done by me. The
+              name joins coin and couple.)</p>
+          </header>
+          <div class="diag-secao">
+            <h2>What Coinple solves</h2>
+            <p>Most finance apps open with red: how much went out, how much is missing, how much you exceeded. Coinple
+              opens with the green of what is available. It is a framing decision before being an interface decision.
+              Seeing what is left first changes the relationship with money, from surveillance to calm control, and that
+              is what sustains the brand promise.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>From AI to design</h2>
+            <p>The first screen of Coinple wasn't designed, it was generated. I started with vibe coding, with the AI
+              producing a functional mockup from descriptions. It worked, but it was generic: standard fintech warm
+              gradient, "spent" and "available" side by side with the same weight, categories in a uniform grid, without
+              hierarchy and without voice.</p>
+            <figure class="diag-media"><img src="assets/img/Coinple/Coinple-IA.webp"
+                alt="Coinple AI generation vs Redesign" /></figure>
+            <p>My version started from questions that the AI doesn't ask on its own: what does the person need to feel
+              when opening the app? What should they see first? What is secondary? What changed between the two versions
+              wasn't aesthetics, it was intention: The available started coming first and in green. Spent stepped back.
+              Main categories gained size and prominence at the top. The rest became smaller below. A calm landscape
+              illustration replaced the generic gradient. Names became real and affectionate. The app talks about
+              people, not accounts. The AI delivered an app that worked. Design delivered an app with a point of view.
+            </p>
+          </div>
+          <div class="diag-secao">
+            <h2>Categories commanded by the user</h2>
+            <p>What is important changes from person to person. That is why the main categories are large, stay in
+              front, and it is the person who chooses which ones occupy that place. The visual hierarchy is not imposed
+              by the app, it is configured by the user. Secondary categories remain accessible, but do not compete for
+              attention.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Automatic logging: Shortcuts and Apple Pay</h2>
+            <p>The point where almost all budget apps fail is manual logging. The person gets tired, stops logging, and
+              the numbers stop reflecting reality. Coinple attacks this friction by connecting to iPhone Shortcuts: an
+              expense paid with Apple Pay is logged automatically, without the person having to open the app and type
+              anything.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Where it is now</h2>
+            <p>Coinple is a personal project in development. I continue to work on design and features. The current
+              challenge is to fine-tune the categorization of expenses that arrive through automation, so that an
+              automatically registered value falls into the right category without me having to correct it later. It is
+              the kind of problem that only appears when the product is already being seriously used, and that is
+              exactly why I like to solve it.</p>
+          </div>
+        </div>
+
+        <div data-lang="pt" hidden>
+          <header class="diag-hero">
+            <h1 class="diag-titulo">Coinple</h1>
+            <p class="diag-solucao">A Coinple é uma app de orçamento para finanças partilhadas, desenhada para fazer o
+              oposto da maioria: em vez de abrir pelo que já saiu, abre pelo que ainda há. Dinheiro dividido entre duas
+              pessoas costuma ser fonte de tensão, quase sempre por falta de visibilidade. A resposta da Coinple é
+              tranquilidade: as categorias que mais pesam no mês ficam grandes e à frente, o disponível vem primeiro, e
+              é a pessoa que decide o que aparece em destaque.</p>
+            <p class="diag-nota">(projeto pessoal, em desenvolvimento contínuo. Marca, design e código feitos por mim. O
+              nome junta coin e couple.)</p>
+          </header>
+          <div class="diag-secao">
+            <h2>O que a Coinple resolve</h2>
+            <p>A maioria das apps de finanças abre com o vermelho: quanto saiu, quanto falta, quanto excedeste. A
+              Coinple abre com o verde do que está disponível. É uma decisão de enquadramento antes de ser uma decisão
+              de interface. Ver primeiro o que resta muda a relação com o dinheiro, de vigilância para controlo calmo, e
+              é isso que sustenta a promessa da marca.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Da IA ao design</h2>
+            <p>O primeiro ecrã da Coinple não foi desenhado, foi gerado. Comecei por vibe coding, com a IA a produzir um
+              mockup funcional a partir de descrições. Funcionava, mas era genérico: gradiente quente padrão de fintech,
+              "gasto" e "disponível" lado a lado com o mesmo peso, categorias num grid uniforme, sem hierarquia e sem
+              voz.</p>
+            <figure class="diag-media"><img src="assets/img/Coinple/Coinple-IA.webp"
+                alt="Coinple Geração de IA vs Redesign" /></figure>
+            <p>A minha versão partiu de perguntas que a IA não faz sozinha: o que a pessoa precisa de sentir ao abrir a
+              app? O que deve ver primeiro? O que é secundário? O que mudou entre as duas versões não foi estética, foi
+              intenção: O disponível passou a vir primeiro e em verde. O gasto recuou. As categorias principais ganharam
+              tamanho e destaque no topo. As restantes ficaram menores por baixo. Uma ilustração calma de paisagem
+              substituiu o gradiente genérico. Os nomes passaram a ser reais e afetivos. A app fala de pessoas, não de
+              contas. A IA entregou uma app que funcionava. O design entregou uma app com ponto de vista.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Categorias comandadas por quem usa</h2>
+            <p>O que é importante muda de pessoa para pessoa. Por isso as categorias principais são grandes, ficam à
+              frente, e é a pessoa que escolhe quais ocupam esse lugar. A hierarquia visual não é imposta pela app, é
+              configurada por quem a usa. As categorias secundárias continuam acessíveis, mas não competem pela atenção.
+            </p>
+          </div>
+          <div class="diag-secao">
+            <h2>Registo automático: Atalhos e Apple Pay</h2>
+            <p>O ponto onde quase todas as apps de orçamento falham é o registo manual. A pessoa cansa, deixa de
+              registar, e os números deixam de refletir a realidade. A Coinple ataca esse atrito ligando-se aos Atalhos
+              do iPhone: um gasto pago com Apple Pay é registado automaticamente, sem a pessoa ter de abrir a app e
+              escrever nada.</p>
+          </div>
+          <div class="diag-secao">
+            <h2>Onde está agora</h2>
+            <p>A Coinple é um projeto pessoal em desenvolvimento. Continuo a trabalhar no design e nas funcionalidades.
+              O desafio atual é afinar a categorização dos gastos que chegam pela automação, para que um valor registado
+              automaticamente caia na categoria certa sem eu ter de o corrigir depois. É o tipo de problema que só
+              aparece quando o produto já está a ser usado a sério, e é exatamente por isso que gosto de o resolver.</p>
+          </div>
+        </div>
+      </div>
+      <nav class="diag-nav">
+        <button type="button" data-nav-projetos data-i18n="case.voltar"></button>
+      </nav>
+    </section>
+  </template>
+
 
   <template data-route="contact">
     <!-- Minimal contact page: heading, the two prominent links, and a light
@@ -554,8 +1093,8 @@
         <button class="contacto-enviar" type="submit">
           <span data-i18n="contact.form_send"></span>
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
-              stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </button>
       </form>

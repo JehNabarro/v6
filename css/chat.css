@@ -118,6 +118,22 @@
   line-height: 1.55;
 }
 
+.chat-media {
+  margin: var(--esp-sm) 0 0;
+  width: min(100%, 600px);
+  border-radius: var(--raio-md);
+  overflow: hidden;
+  border: 1px solid var(--cor-destaque);
+  box-shadow: var(--brilho-destaque);
+}
+
+.chat-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 /* Typing indicator: three pulsing dots (reused from jessy). */
 .chat-digitando {
   display: flex;

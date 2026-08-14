@@ -1,33 +1,52 @@
 /*
-  projects.css
-  The Projects page: a heading, a short intro, then the four cases as a stacked
-  list. Follows the layout language of the other pages (centred column, the
-  shared grid and top glow behind it, .glass-free simple rows).
+  projects.css (v2)
+  Rich projects gallery with CSS device mockups.
 
-  Every row carries the SAME visual weight — the accent line in front is the only
-  grouping cue, matching the menu. Names run at full strength text so nothing
-  relies on reduced opacity for the primary label.
+  Order:
+    1. Momentos          — hero/featured, mobile + tablet stacked from bottom
+    2. Diagnóstico       — standard, desktop browser only (user request)
+    3. Motorline         — standard, desktop browser only
+    ── Study divider ──
+    4. Coinple           — personal project, two mobile phones side by side
+
+  All device frames are pure CSS — no SVG or image files for the shells.
+  Scoped with .pagina-projetos / .projeto-* / .mockup-* so it never leaks.
 */
 
+/* ── Page shell ─────────────────────────────────────────────────────── */
 .pagina-projetos {
   position: relative;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: var(--esp-lg);
-  padding: calc(var(--altura-cabecalho) + var(--esp-2xl)) var(--espaco-pagina) var(--esp-2xl);
+  gap: var(--esp-2xl);
+  padding:
+    calc(var(--altura-cabecalho) + var(--esp-2xl))
+    var(--espaco-pagina)
+    var(--esp-2xl);
 }
 
-.projetos-copy {
+/* ── Page header ─────────────────────────────────────────────────────── */
+.projetos-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--esp-sm);
+  text-align: center;
+  width: 100%;
 }
 
+.projetos-eyebrow {
+  margin: 0;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cor-destaque);
+}
+
+/* Keep existing title and intro classes for backward-compat with i18n keys */
 .projetos-titulo {
   margin: 0;
   font-size: var(--texto-titulo);
@@ -42,58 +61,489 @@
   font-size: var(--texto-subtitulo);
 }
 
-/* The four cases, stacked. Left aligned so the accent line reads as a spine. */
-.projetos-lista {
+/* ── Cards column ───────────────────────────────────────────────────── */
+.projetos-grade {
   display: flex;
   flex-direction: column;
-  gap: var(--esp-sm);
-  width: min(100%, var(--largura-chat-bar));
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  text-align: left;
+  gap: var(--esp-lg);
+  width: 100%;
+  max-width: 1100px;
 }
 
-/* One case row. The accent line in front is the same cue used in the menu; the
-   whole row is one full-strength weight, with a quieter description beneath. */
-.projeto-item {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-xs);
-  width: 100%;
-  padding: var(--esp-md);
-  padding-left: var(--esp-md);
-  border-left: 2px solid var(--cor-borda);
-  border-radius: 0 var(--raio-md) var(--raio-md) 0;
-  text-align: left;
-  color: var(--cor-texto);
+/* ── Base card ──────────────────────────────────────────────────────── */
+.projeto-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-xl);
+  align-items: center;
+  padding: var(--esp-xl);
+  border-radius: var(--raio-md);
+  background: var(--cor-vidro);
+  border: 1px solid var(--cor-borda);
+  box-shadow:
+    inset 1px 1px 1px var(--cor-brilho),
+    0 8px 32px var(--cor-sombra);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
   transition:
     border-color var(--duracao-rapida) ease,
-    background-color var(--duracao-rapida) ease;
+    box-shadow var(--duracao-rapida) ease;
 }
 
-.projeto-item:hover,
-.projeto-item:focus-visible {
-  border-left-color: var(--cor-destaque);
+.projeto-card:hover {
+  border-color: rgba(182, 94, 219, 0.35);
+  box-shadow:
+    inset 1px 1px 1px var(--cor-brilho),
+    0 12px 48px var(--cor-sombra),
+    0 0 0 1px rgba(182, 94, 219, 0.12);
+}
+
+/* ── Featured hero card (Momentos) ──────────────────────────────────── */
+.projeto-card--destaque {
+  grid-template-columns: 1fr 1.05fr;
+  align-items: flex-end;
+  /* top padding only; mockup rises from the bottom edge */
+  padding: var(--esp-xl) var(--esp-xl) 0;
+  background:
+    radial-gradient(55% 65% at 78% 100%, rgba(182, 94, 219, 0.11), transparent),
+    var(--cor-vidro);
+  min-height: 460px;
+}
+
+/* ── Study card (Coinple) ─────────────────────────────────────────────── */
+.projeto-card--estudo {
   background: var(--cor-superficie-suave);
 }
 
-.projeto-item__nome {
-  font-size: var(--texto-lg);
+/* ── Mockup-left variant: on ≥768 px, mockup col comes before copy col ─ */
+/* In the HTML, copy is always first child (screen-reader and mobile order). */
+
+/* ── Copy area ──────────────────────────────────────────────────────── */
+.projeto-card__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-md);
+}
+
+/* Push copy to the bottom on the featured hero */
+.projeto-card--destaque .projeto-card__copy {
+  padding-bottom: var(--esp-xl);
+}
+
+/* ── Tag pill ──────────────────────────────────────────────────────── */
+.projeto-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 var(--esp-sm);
+  border-radius: var(--raio-pill);
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-superficie-suave);
+  font-size: var(--texto-xs);
   font-weight: var(--peso-medio);
-  color: var(--cor-texto);
-}
-
-/* Description: the one place a softer tone is used, kept at 60% white which
-   clears WCAG AA (~6.6:1) on the page background. */
-.projeto-item__desc {
-  font-size: var(--texto-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--cor-texto-suave);
+  width: fit-content;
 }
 
-/* Desktop: a touch more breathing room around the list. */
+.projeto-tag--destaque {
+  background: rgba(182, 94, 219, 0.14);
+  border-color: rgba(182, 94, 219, 0.45);
+  color: var(--cor-destaque);
+}
+
+/* ── Project name ─────────────────────────────────────────────────── */
+.projeto-card__nome {
+  margin: 0;
+  font-weight: var(--peso-forte);
+  color: var(--cor-texto);
+  line-height: 1.1;
+}
+
+.projeto-card--destaque .projeto-card__nome {
+  font-size: clamp(36px, 5vw, 60px);
+}
+
+.projeto-card:not(.projeto-card--destaque) .projeto-card__nome {
+  font-size: clamp(22px, 2.5vw, 34px);
+}
+
+/* ── Description ──────────────────────────────────────────────────── */
+.projeto-card__desc {
+  margin: 0;
+  font-size: var(--texto-base);
+  line-height: 1.6;
+  color: var(--cor-texto-suave);
+  max-width: 38ch;
+}
+
+.projeto-card--destaque .projeto-card__desc {
+  font-size: var(--texto-subtitulo);
+  max-width: 42ch;
+}
+
+/* ── CTA link ─────────────────────────────────────────────────────── */
+.projeto-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--alt-xs);
+  padding: 0 var(--esp-md);
+  border-radius: var(--raio-pill);
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  text-decoration: none;
+  width: fit-content;
+  transition:
+    border-color var(--duracao-rapida) ease,
+    box-shadow var(--duracao-rapida) ease;
+}
+
+.projeto-card__cta::after {
+  content: '→';
+  color: var(--cor-destaque);
+}
+
+.projeto-card__cta:hover,
+.projeto-card__cta:focus-visible {
+  border-color: var(--cor-destaque);
+  box-shadow: var(--brilho-destaque);
+}
+
+.projeto-card--destaque .projeto-card__cta {
+  height: var(--alt-sm);
+  padding: 0 var(--esp-lg);
+  font-size: var(--texto-base);
+  background: rgba(182, 94, 219, 0.10);
+  border-color: rgba(182, 94, 219, 0.40);
+  box-shadow: var(--brilho-destaque);
+}
+
+/* ── Mockup wrapper ─────────────────────────────────────────────────── */
+.projeto-card__mockup {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--esp-sm);
+}
+
+/* Featured: mockup column fills the full card height */
+.projeto-card--destaque .projeto-card__mockup {
+  position: relative;
+  align-self: stretch;
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/*  DEVICE FRAMES (pure CSS, no SVG, no extra images)                   */
+/* ────────────────────────────────────────────────────────────────────── */
+
+/* ── Mobile frame ──────────────────────────────────────────────────── */
+.mockup-mobile {
+  position: relative;
+  width: 150px;
+  flex: 0 0 150px;
+}
+
+.mockup-mobile__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19.5;
+  background: #1c1929;
+  border-radius: 36px;
+  border: 7px solid #2e2b3a;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+/* Dynamic Island */
+.mockup-mobile__frame::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 12px;
+  background: #0e0c18;
+  border-radius: 8px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Home indicator bar */
+.mockup-mobile__frame::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: var(--raio-pill);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mockup-mobile__screen {
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.mockup-mobile__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* ── Tablet frame ──────────────────────────────────────────────────── */
+.mockup-tablet {
+  position: relative;
+  width: 220px;
+  flex: 0 0 220px;
+}
+
+.mockup-tablet__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #1c1929;
+  border-radius: 26px;
+  border: 7px solid #2e2b3a;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 24px 64px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+/* Home indicator */
+.mockup-tablet__frame::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: var(--raio-pill);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mockup-tablet__screen {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.mockup-tablet__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* ── Desktop / Browser frame ─────────────────────────────────────────── */
+.mockup-desktop {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+  background: #1c1929;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 32px 80px rgba(0, 0, 0, 0.50);
+}
+
+/* Browser chrome bar */
+.mockup-desktop__chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  background: #2e2b3a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Traffic lights */
+.mockup-desktop__dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: 0 0 10px;
+}
+
+.mockup-desktop__dot:nth-child(1) { background: #ff5f57; }
+.mockup-desktop__dot:nth-child(2) { background: #febc2e; }
+.mockup-desktop__dot:nth-child(3) { background: #28c840; }
+
+/* Fake URL bar */
+.mockup-desktop__url {
+  flex: 1;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--raio-pill);
+  margin: 0 8px;
+}
+
+/* Screen area: 16:9 */
+.mockup-desktop__screen {
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.mockup-desktop__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/*  PER-PROJECT MOCKUP COMPOSITIONS                                      */
+/* ────────────────────────────────────────────────────────────────────── */
+
+/* Momentos: tablet (back-left) + mobile (front-right), rise from bottom */
+.mockup-momentos {
+  position: absolute;
+  inset: 0;
+}
+
+.mockup-momentos .mockup-tablet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 58%;
+}
+
+.mockup-momentos .mockup-mobile {
+  position: absolute;
+  bottom: var(--esp-xl);
+  right: 0;
+  width: 40%;
+  z-index: 2;
+}
+
+/* Coinple: two phones; second one elevated for depth */
+.mockup-coinple .mockup-mobile:last-child {
+  transform: translateY(-20px);
+  opacity: 0.75;
+}
+
+/* ── Section divider ─────────────────────────────────────────────────── */
+.projetos-divisor {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-md);
+  width: 100%;
+  margin-top: var(--esp-sm);
+}
+
+.projetos-divisor::before,
+.projetos-divisor::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cor-borda);
+}
+
+.projetos-divisor__label {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+  white-space: nowrap;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+
+/* Desktop: mockup-left variant swaps column order */
 @media (min-width: 768px) {
+  .projeto-card--mockup-esq .projeto-card__copy   { order: 2; }
+  .projeto-card--mockup-esq .projeto-card__mockup { order: 1; }
+}
+
+/* Mobile: single-column, mockup always above copy */
+@media (max-width: 767px) {
   .pagina-projetos {
     gap: var(--esp-xl);
+  }
+
+  .projeto-card,
+  .projeto-card--destaque {
+    grid-template-columns: 1fr;
+    padding: var(--esp-lg) var(--esp-md);
+    gap: var(--esp-lg);
+    align-items: start;
+    min-height: unset;
+  }
+
+  /* Copy always below the mockup on mobile */
+  .projeto-card__copy   { order: 2; }
+  .projeto-card__mockup { order: 1; }
+
+  /* Featured copy: no extra bottom padding */
+  .projeto-card--destaque .projeto-card__copy {
+    padding-bottom: 0;
+  }
+
+  /* Momentos: switch from absolute to a side-by-side flex row */
+  .projeto-card--destaque .projeto-card__mockup {
+    position: static;
+    align-self: auto;
+    min-height: unset;
+  }
+
+  .mockup-momentos {
+    position: relative;
+    inset: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: var(--esp-sm);
+    height: 260px;
+  }
+
+  .mockup-momentos .mockup-tablet {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    width: 140px;
+    flex: 0 0 140px;
+  }
+
+  .mockup-momentos .mockup-mobile {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: 100px;
+    flex: 0 0 100px;
+    transform: translateY(-20px);
+  }
+
+  /* Coinple phones: smaller on mobile */
+  .mockup-coinple .mockup-mobile {
+    width: 115px;
+    flex: 0 0 115px;
   }
 }
